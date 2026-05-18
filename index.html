@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İyi ki doğdun, hayatım! ❤️</title>
+    <style>
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0; padding: 0;
+            background-color: #6b1d2f; 
+            font-family: 'Segoe UI', Arial, sans-serif; color: #333;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* SEITEN-CONTAINER FÜR DEN SWIPE-EFFEKT */
+        .page-container {
+            display: flex;
+            width: 200vw; 
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            position: relative;
+        }
+
+        /* DIE BEIDEN HAUPTSEITEN */
+        .page-main, .page-timeline {
+            width: 100vw;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        /* Erste Sektion */
+        .intro-section { 
+            position: relative;
+            min-height: 100vh; 
+            height: 100vh;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            width: 100%; 
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        /* Transparenter Bild-Hintergrund */
+        .intro-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('hintergrund.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.4; 
+            z-index: 1;
+        }
+
+        /* ELEGANTER, SCHWEBENDER MUSIK-PLAYER OBEN RECHTS */
+        .music-player-widget {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        .music-player-widget:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+        }
+        .music-icon-wrapper {
+            font-size: 1.5rem;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        .music-playing .music-icon-wrapper {
+            animation: rotateMusicIcon 4s linear infinite;
+        }
+        .music-player-text {
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-left: 10px;
+            font-family: 'Segoe UI', sans-serif;
+            letter-spacing: 0.5px;
+        }
+        @keyframes rotateMusicIcon {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* BRIEFUMSCHLAG ELEMENTE */
+        .envelope-wrapper { 
+            position: relative; 
+            width: 450px; 
+            height: 300px; 
+            cursor: pointer; 
+            transition: transform 0.3s ease, opacity 0.6s ease, scale 0.6s ease; 
+            z-index: 10; 
+        }
+        .envelope-wrapper:hover { transform: scale(1.02); }
+        
+        .envelope { 
+            position: absolute; 
+            bottom: 0; left: 0; 
+            width: 450px; 
+            height: 300px; 
+            background-color: #d14949; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5); 
+            border-radius: 0 0 15px 15px; 
+            z-index: 2;
+        }
+        
+        .envelope::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 0; height: 0;
+            border-left: 225px solid transparent; border-right: 225px solid transparent;
+            border-top: 165px solid #b33636; 
+            transform-origin: top; 
+            transition: transform 0.6s ease-in-out; 
+            z-index: 4;
+        }
+        .seal { 
+            position: absolute; 
+            top: 140px; left: 205px; 
+            width: 40px; height: 40px; 
+            background: radial-gradient(circle, #ffe066 0%, #d4af37 100%); 
+            border-radius: 50%; 
+            z-index: 5; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3); 
+            transition: opacity 0.3s ease; 
+        }
+        
+        .letter { 
+            position: absolute; 
+            bottom: 10px; left: 20px; 
+            width: 410px; height: 270px; 
+            background-color: #fff; 
+            border-radius: 8px; 
+            padding: 25px; 
+            box-sizing: border-box; 
+            text-align: center; 
+            box-shadow: 0 0 15px rgba(0,0,0,0.1); 
+            z-index: 1; 
+            transition: transform 0.7s ease-in-out 0.2s; 
+        }
+        .letter h1 { font-family: 'Brush Script MT', cursive, sans-serif; font-size: 28px; color: #d14949; margin-top: 5px; margin-bottom: 15px; }
+        .letter p { font-size: 16px; color: #444; line-height: 1.6; margin: 10px 0; }
+
+        .brief-oeffnen-btn {
+            background-color: #d14949; color: white; border: none;
+            padding: 8px 20px; font-size: 0.95rem; font-weight: bold;
+            border-radius: 20px; cursor: pointer; margin-top: 15px;
+            opacity: 0; pointer-events: none; transition: opacity 0.5s ease 0.9s;
+        }
+
+        .envelope-wrapper.open .envelope::before { transform: rotateX(180deg); z-index: 0; }
+        .envelope-wrapper.open .seal { opacity: 0; pointer-events: none; }
+        .envelope-wrapper.open .letter { transform: translateY(-160px); z-index: 5; }
+        .envelope-wrapper.open .brief-oeffnen-btn { opacity: 1; pointer-events: auto; }
+        .envelope-wrapper.hidden { opacity: 0; transform: scale(0.7); pointer-events: none; }
+
+        /* TEXT-KASTEN */
+        .kasten-overlay {
+            position: absolute;
+            width: 100%;
+            max-width: 1100px;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: none;
+            z-index: 5;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .kasten-overlay.visible { display: block; opacity: 1; transform: scale(1); }
+
+        .intro-table { border-collapse: collapse; width: 100%; margin: auto; }
+        .intro-cell-side { width: 20%; text-align: center; vertical-align: middle; }
+        .intro-cell-main { width: 60%; padding: 0 20px; vertical-align: middle; }
+
+        .side-pic {
+            width: 100%; max-width: 160px; height: 220px; object-fit: cover;
+            border: 4px solid white; box-shadow: 0 8px 20px rgba(0,0,0,0.3); border-radius: 4px;
+        }
+
+        .text-kasten { 
+            background-color: rgba(255, 255, 255, 0.96); border-radius: 15px; padding: 35px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4); text-align: center;
+        }
+        .text-kasten h1 { font-family: 'Brush Script MT', cursive, sans-serif; font-size: 2.6rem; color: #6b1d2f; margin-top: 0; margin-bottom: 15px; }
+        .text-kasten p { font-size: 1.1rem; line-height: 1.6; color: #444; margin-bottom: 20px; }
+        
+        .weiter-btn {
+            background-color: #6b1d2f; color: white; border: none; padding: 12px 25px;
+            font-size: 1rem; font-weight: bold; border-radius: 25px; cursor: pointer; display: inline-block; transition: transform 0.2s;
+        }
+        .weiter-btn:hover { transform: scale(1.05); }
+
+        /* CSS-BLUMEN */
+        .css-blumen {
+            position: absolute; bottom: -20px; left: -20px;
+            width: 150px; height: 150px; opacity: 0;
+            transition: opacity 1s ease; z-index: 6;
+            pointer-events: none;
+        }
+        .css-blumen.visible { opacity: 1; }
+        .stengel {
+            position: absolute; bottom: 20px; left: 20px;
+            width: 8px; height: 100px; background-color: #3e6b41;
+            border-radius: 4px; transform: rotate(25deg); transform-origin: bottom;
+            animation: wachsen 1.5s ease-out forwards;
+        }
+        .bluete {
+            position: absolute; top: -15px; left: -16px;
+            width: 40px; height: 40px; background: radial-gradient(circle, #d14949 0%, #8a1f34 100%);
+            border-radius: 50% 50% 0 50%; transform: rotate(-45deg);
+            box-shadow: -2px 2px 10px rgba(0,0,0,0.2);
+        }
+        @keyframes wachsen { 0% { height: 0; } 100% { height: 100px; } }
+
+        /* HAUPTINHALT (Die Polaroids) */
+        .main-content { 
+            max-width: 900px; width: 90%; margin: 0 auto; 
+            opacity: 0; transform: translateY(50px); 
+            transition: opacity 1s ease, transform 1s ease; 
+            display: none; text-align: center; padding-bottom: 60px; color: white; 
+        }
+        .main-content.visible { display: block; opacity: 1; transform: translateY(0); }
+        .birthday-title { font-family: 'Brush Script MT', cursive, sans-serif; font-size: 3.8rem; color: #fecfef; margin-top: 50px; margin-bottom: 10px; }
+        .subtitle { font-size: 1.3rem; color: #fecfef; margin-bottom: 50px; font-style: italic; opacity: 0.9; }
+        .gallery-title { font-size: 2rem; color: #fecfef; margin-top: 60px; margin-bottom: 50px; }
+        
+        .grid-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; justify-items: center; padding: 20px; }
+        .polaroid { background: white; padding: 15px 15px 30px 15px; box-shadow: 0 12px 25px rgba(0,0,0,0.3); border-radius: 2px; transition: transform 0.3s ease; max-width: 230px; color: #333; }
+        .polaroid:nth-child(3n+1) { transform: rotate(-3deg); }
+        .polaroid:nth-child(3n+2) { transform: rotate(2deg); }
+        .polaroid:nth-child(3n+3) { transform: rotate(-1deg); }
+        .polaroid:hover { transform: scale(1.08) rotate(0deg) !important; z-index: 10; box-shadow: 0 18px 35px rgba(0,0,0,0.4); }
+        .polaroid img { width: 100%; height: 280px; object-fit: cover; border: 1px solid #eee; background-color: #f5f5f5; }
+        .polaroid .caption { margin-top: 15px; font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 1.1rem; color: #444; }
+        
+        /* BOX DESIGN */
+        .reasons-section {
+            margin-top: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            min-height: 750px;
+            width: 100%;
+        }
+        
+        .box-perspective-wrapper {
+            position: absolute;
+            bottom: 140px;
+            width: 360px;
+            height: 300px;
+            z-index: 5;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .contrast-box-3d {
+            position: relative;
+            width: 220px;
+            height: 180px;
+            margin-right: 40px;
+            margin-top: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .c-box-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4), inset -5px -5px 15px rgba(0,0,0,0.05);
+            z-index: 4;
+            overflow: hidden;
+        }
+        
+        .c-box-text-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
+            z-index: 5;
+            color: #4a0e17;
+        }
+        .c-box-text-content h3 { font-family: 'Brush Script MT', cursive, sans-serif; font-size: 1.6rem; margin: 0 0 5px 0; }
+        .c-box-text-content .c-heart-icon { font-size: 1.8rem; margin: 5px 0; }
+
+        .c-box-side-right {
+            position: absolute;
+            top: 0; left: 220px;
+            width: 50px; height: 180px;
+            background: #f0f0f0;
+            clip-path: polygon(0% 0%, 100% -15px, 100% calc(100% - 15px), 0% 100%);
+            z-index: 2;
+            box-shadow: inset 5px 0 10px rgba(0,0,0,0.05);
+        }
+
+        .c-box-inside {
+            position: absolute;
+            top: -15px; left: 15px;
+            width: 205px; height: 180px;
+            background: #d4af37;
+            clip-path: polygon(0% 15px, 100% 0%, 100% 100%, 0% 100%);
+            box-shadow: inset 0 10px 20px rgba(0,0,0,0.4);
+            z-index: 1;
+        }
+
+        .c-box-lid {
+            position: absolute;
+            top: -20px; left: 160px;
+            width: 120px; height: 210px;
+            transform: rotate(22deg);
+            z-index: 10;
+            filter: drop-shadow(8px 10px 15px rgba(0,0,0,0.3));
+        }
+        .c-lid-top {
+            position: absolute;
+            width: 100%; height: 100%;
+            background: #ffffff;
+            border-radius: 6px;
+            border: 1px solid #eaeaea;
+            overflow: hidden;
+        }
+
+        .c-ribbon-vertical {
+            position: absolute;
+            left: 50%; top: 0;
+            width: 28px; height: 100%;
+            background: linear-gradient(90deg, #d4af37, #f3e5ab, #d4af37);
+            transform: translateX(-50%);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .c-ribbon-lid-v {
+            position: absolute; left: 50%; top: 0; width: 20px; height: 100%;
+            background: linear-gradient(90deg, #d4af37, #f3e5ab, #d4af37); transform: translateX(-50%);
+        }
+        .c-ribbon-lid-h {
+            position: absolute; top: 50%; left: 0; width: 100%; height: 20px;
+            background: linear-gradient(180deg, #d4af37, #f3e5ab, #d4af37); transform: translateY(-50%);
+        }
+
+        .c-bow {
+            position: absolute; left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px; height: 40px; z-index: 12;
+        }
+        .c-loop-l, .c-loop-r {
+            position: absolute; top: 5px; width: 28px; height: 20px;
+            border: 4px solid #d4af37; border-radius: 50%; background: #ffffff;
+        }
+        .c-loop-l { left: -8px; transform: rotate(-20deg); box-shadow: -2px 4px 5px rgba(0,0,0,0.15); }
+        .c-loop-r { right: -8px; transform: rotate(20deg); box-shadow: 2px 4px 5px rgba(0,0,0,0.15); }
+        .c-knot {
+            position: absolute; left: 23px; top: 12px;
+            width: 14px; height: 14px; background: #d4af37; border-radius: 40%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .shake-contrast {
+            animation: shakeContrastBox 0.5s ease-in-out;
+        }
+        @keyframes shakeContrastBox {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            20%, 60% { transform: rotate(-3deg) scale(1.03); }
+            40%, 80% { transform: rotate(3deg) scale(1.03); }
+        }
+
+        /* HERAUSFLIEGENDER BRIEF */
+        .flying-heart-message {
+            position: absolute;
+            bottom: 140px;
+            width: 420px;
+            height: 380px;
+            background-color: #ffffff;
+            clip-path: url(#heart-clip);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            padding: 50px 45px 80px 45px;
+            box-sizing: border-box;
+            display: none;
+            z-index: 3; 
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            color: #6b1d2f;
+            font-size: 1.35rem;
+            line-height: 1.6;
+            font-weight: bold;
+        }
+
+        .fly-up-contrast {
+            display: flex;
+            flex-direction: column;
+            animation: flyOutContrast 1.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes flyOutContrast {
+            0% { transform: translateY(120px) scale(0.1); opacity: 0; }
+            30% { opacity: 1; }
+            100% { transform: translateY(-230px) scale(1) rotate(-2deg); opacity: 1; }
+        }
+
+        .reasons-btn {
+            background-color: #fecfef;
+            color: #6b1d2f;
+            border: none;
+            padding: 16px 45px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 35px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            transition: transform 0.2s, background-color 0.2s;
+            z-index: 15;
+            position: absolute;
+            bottom: 20px;
+        }
+        .reasons-btn:hover { transform: scale(1.05); background-color: #fff; }
+
+        /* PLATTENSPIELER MIT ROTIERENDER VIDEO-SCHEIBE */
+        .music-section { 
+            margin-top: 100px; 
+            background: rgba(255, 255, 255, 0.08); 
+            padding: 50px 40px; 
+            border-radius: 24px; 
+            border: 1px solid rgba(255,255,255,0.15);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 650px;
+            box-sizing: border-box;
+        }
+        .music-section h3 { color: #fecfef; font-size: 1.8rem; margin: 0 0 35px 0; font-family: 'Brush Script MT', cursive, sans-serif; }
+
+        .turntable-body {
+            position: relative;
+            width: 320px;
+            height: 240px;
+            background: #f5f5f5;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4), inset 0 -8px 0 #e0e0e0, 0 4px 0 #6b1d2f;
+            border-bottom: 8px solid #d4af37;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .vinyl-record {
+            position: absolute;
+            left: 25px;
+            width: 190px;
+            height: 190px;
+            background: radial-gradient(circle, #222 35%, #111 60%, #333 65%, #111 100%);
+            border-radius: 50%;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .vinyl-record::before {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border: 1px dashed rgba(255,255,255,0.08);
+            border-radius: 50%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .vinyl-label-video {
+            position: relative;
+            width: 105px;
+            height: 105px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 0 4px #111, inset 0 0 15px rgba(0,0,0,0.5);
+            z-index: 3;
+            background-color: #000;
+        }
+
+        .vinyl-label-video video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0; left: 0;
+        }
+
+        .vinyl-center-hole {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #222;
+            border-radius: 50%;
+            border: 2px solid #d4af37;
+            z-index: 5;
+        }
+
+        /* Tonarm */
+        .turntable-arm {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            width: 20px;
+            height: 20px;
+            background: #d4af37;
+            border-radius: 50%;
+            z-index: 10;
+        }
+        .turntable-arm::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 5px;
+            width: 8px;
+            height: 110px;
+            background: #d4af37;
+            transform: rotate(-22deg);
+            transform-origin: top center;
+            border-radius: 4px;
+            transition: transform 0.5s ease;
+        }
+        .turntable-arm::after {
+            content: '';
+            position: absolute;
+            top: 110px;
+            right: -32px;
+            width: 14px;
+            height: 22px;
+            background: #cfb042;
+            transform: rotate(-22deg);
+            border-radius: 2px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: transform 0.5s ease;
+        }
+
+        .turntable-switch {
+            position: absolute;
+            bottom: 20px;
+            right: 25px;
+            width: 25px;
+            height: 25px;
+            background: #e0e0e0;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border: 2px solid #fff;
+        }
+
+        /* Animationen für das laufende System */
+        .music-playing .vinyl-record {
+            animation: spinVinyl 8s linear infinite;
+        }
+        .music-playing .turntable-arm::before { transform: rotate(-5deg); }
+        .music-playing .turntable-arm::after { transform: rotate(-5deg); }
+
+        @keyframes spinVinyl {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* PORTAL-ZONE FÜR DEN ZEITSTRAHL */
+        .portal-section {
+            margin-top: 120px;
+            padding: 60px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(212,175,55,0.15) 100%);
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 30px 30px 0 0;
+        }
+        .portal-section h2 {
+            font-family: 'Brush Script MT', cursive, sans-serif;
+            font-size: 3rem;
+            color: #fecfef;
+            margin-bottom: 15px;
+        }
+        .portal-section p {
+            color: #fff;
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 40px;
+        }
+        .portal-btn {
+            background: linear-gradient(135deg, #d4af37 0%, #b89324 100%);
+            color: #4a0e17;
+            border: none;
+            padding: 16px 45px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 35px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .portal-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(212,175,55,0.4);
+        }
+
+        /* TIMELINE SEITE DESIGN (RECHTE SEITE) */
+        .page-timeline {
+            background-color: #4a0e17;
+            min-height: 100vh;
+            padding: 40px 20px 100px 20px;
+            position: relative;
+        }
+        
+        .timeline-back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            margin-bottom: 40px;
+            backdrop-filter: blur(5px);
+        }
+        .timeline-back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .timeline-header h1 {
+            font-family: 'Brush Script MT', cursive, sans-serif;
+            font-size: 3.5rem;
+            color: #d4af37;
+            margin: 0;
+            text-align: center;
+        }
+        .timeline-header p {
+            color: #fecfef;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 60px;
+        }
+
+        /* Die goldene Linie */
+        .timeline-container {
+            position: relative;
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+            padding-bottom: 50px; /* Platz für Pfeilspitze */
+        }
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: #d4af37;
+            top: 0; bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+            box-shadow: 0 0 10px rgba(212,175,55,0.5);
+        }
+
+        /* PFEILSPITZE AM ENDE DES ZEITSTRAHLS */
+        .timeline-arrow-down {
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 18px solid #d4af37;
+            z-index: 5;
+            filter: drop-shadow(0px 4px 5px rgba(212,175,55,0.4));
+        }
+
+        /* FAZIT TEXTBOX UNTER DEM ZEITSTRAHL */
+        .timeline-footer-box {
+            max-width: 650px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px rgba(212,175,55,0.2);
+            text-align: center;
+            margin: 60px auto 40px auto;
+            box-sizing: border-box;
+            border: 2px solid #d4af37;
+        }
+        .timeline-footer-box p {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: #4a0e17;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* ZUSÄTZLICHER ZURÜCK-BUTTON GANZ UNTEN */
+        .timeline-bottom-nav {
+            text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+        .timeline-bottom-btn {
+            background: linear-gradient(135deg, #6b1d2f 0%, #4a0e17 100%);
+            color: #fff;
+            border: 2px solid #d4af37;
+            padding: 12px 35px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .timeline-bottom-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 12px 25px rgba(212,175,55,0.3);
+            background: linear-gradient(135deg, #8a293e 0%, #6b1d2f 100%);
+        }
+
+        /* Timeline Items */
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background-color: transparent;
+            width: 50%;
+            box-sizing: border-box;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease-out;
+        }
+        .timeline-item.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item.left { left: 0; text-align: right; }
+        .timeline-item.right { left: 50%; text-align: left; }
+
+        /* Die Punkte auf der Linie */
+        .timeline-item::after {
+            content: '❤️';
+            position: absolute;
+            width: 30px; height: 30px;
+            right: -17px; top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .timeline-item.right::after { left: -13px; }
+
+        /* DIE INHALTS-KARTEN MIT ELEGANTEM HOVER-EFFEKT */
+        .timeline-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            position: relative;
+            display: inline-block;
+            text-align: left;
+            max-width: 85%;
+            transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.3s ease;
+        }
+        
+        .timeline-card:hover {
+            transform: scale(1.04);
+            box-shadow: 0 15px 35px rgba(212,175,55,0.4);
+            background: #ffffff;
+        }
+
+        .timeline-card h2 {
+            margin-top: 0;
+            color: #6b1d2f;
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            transition: font-size 0.3s ease;
+        }
+        .timeline-card:hover h2 {
+            font-size: 1.48rem;
+        }
+
+        .timeline-card .date {
+            color: #b89324;
+            font-weight: bold;
+            font-size: 0.95rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+        
+        /* HIGHLIGHT FÜR DAS SONDERDATUM (SEVGILILER GÜNÜ) */
+        .timeline-card .special-date {
+            color: #eaac12;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 4px rgba(234, 172, 18, 0.2);
+        }
+        
+        /* ANIMIERTES PULSIERENDES HERZ */
+        .beating-heart {
+            font-size: 1.2rem;
+            display: inline-block;
+            animation: heartBeatAnimation 1.2s infinite;
+        }
+        @keyframes heartBeatAnimation {
+            0% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(212,175,55,0.4)); }
+            25% { transform: scale(1.2); filter: drop-shadow(0 0 8px #eaeaea); }
+            40% { transform: scale(1.05); }
+            55% { transform: scale(1.25); filter: drop-shadow(0 0 10px #ffe066); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(212,175,55,0.4)); }
+        }
+
+        .timeline-card p {
+            margin: 0;
+            color: #444;
+            line-height: 1.5;
+            font-size: 1rem;
+            transition: font-size 0.3s ease;
+        }
+        .timeline-card:hover p {
+            font-size: 1.04rem;
+        }
+
+        /* STYLING FÜR DIE BILDER & VIDEOS INNERHALB DER TIMELINE */
+        .timeline-img, .timeline-video-file {
+            width: 100%;
+            height: auto;
+            max-height: 220px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border: 2px solid white;
+            box-sizing: border-box;
+        }
+
+        /* Responsive Anpassung für kleinere Bildschirme */
+        @media screen and (max-width: 768px) {
+            .timeline-container::after { left: 31px; }
+            .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; text-align: left; }
+            .timeline-item.left { left: 0; text-align: left; }
+            .timeline-item.right { left: 0; }
+            .timeline-item::after { left: 15px; right: auto; }
+            .timeline-card { max-width: 100%; }
+            .timeline-arrow-down { left: 31px; transform: translateX(-50%); }
+        }
+
+        /* ANPASSUNG FÜR POLAROID NR. 6 (Fokus nach links verschieben) */
+        .polaroid-focus-left img {
+            object-position: 20% center;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" src="soundtrack.mp3" loop></audio>
+
+    <div class="music-player-widget" id="musicWidget" onclick="toggleMusic()">
+        <span class="music-icon-wrapper">🎵</span>
+        <span class="music-player-text" id="widgetText">Musik aus</span>
+    </div>
+
+    <svg width="0" height="0" style="position:absolute;">
+        <defs>
+            <clipPath id="heart-clip" clipPathUnits="objectBoundingBox">
+                <path d="M 0.5, 0.24 C 0.5, 0.24, 0.42, 0, 0.25, 0 C 0.08, 0, 0, 0.15, 0, 0.34 C 0, 0.58, 0.22, 0.79, 0.5, 1 C 0.78, 0.79, 1, 0.58, 1, 0.34 C 1, 0.15, 0.92, 0, 0.75, 0 C 0.58, 0, 0.5, 0.24, 0.5, 0.24 Z" />
+            </clipPath>
+        </defs>
+    </svg>
+
+    <div class="page-container" id="pageContainer">
+        
+        <div class="page-main">
+            <div class="intro-section" id="introPage">
+                <div class="envelope-wrapper" id="briefUmschlag" onclick="openEnvelope()">
+                    <div class="envelope"><div class="seal"></div></div>
+                    <div class="letter">
+                        <h1>En sevdiğim insan için… ❤️</h1>
+                        <p>Bugün senin günün! Hadi, zarfı hemen aç…</p>
+                        <button class="brief-oeffnen-btn" onclick="zeigeTextKasten(event)">Buraya tıkla ✨</button>
+                    </div>
+                </div>
+
+                <div class="kasten-overlay" id="textKastenOverlay">
+                    <table class="intro-table">
+                        <tr>
+                            <td class="intro-cell-side">
+                                <img src="links.jpg" class="side-pic" alt="Links">
+                            </td>
+                            <td class="intro-cell-main">
+                                <div class="text-kasten">
+                                    <h1>Happy Birthday, iki gözümün nuru ❤️</h1>
+                                    <p>
+                                        Hayatına dokunabildiğim und ilk doğum gününü yanında kutlayabildiğim için kendimi çok şanslı hissediyorum. 
+                                        Seninle geçen her an benim için tarifsiz derecede özel und değerli. Gülüşün, sesin, bakışın… 
+                                        Hepsi kalbimde ayrı bir yer bıraktı.<br><br>
+                                        Bugün sadece senin doğduğun gün değil, aynı zamanda benim hayatımın da güzelleştiği günlerden biri. 
+                                        Bu küçük zaman kapsülü de birlikte yaşadığımız en güzel anıları, hisleri und sana olan sevgimi içinde saklıyor…
+                                    </p>
+                                    <button class="weiter-btn" onclick="zeigeErinnerungen()">Anıları Gör ✨</button>
+                                </div>
+                            </td>
+                            <td class="intro-cell-side">
+                                <img src="rechts.jpg" class="side-pic" alt="Rechts">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="css-blumen" id="animierteBlumen">
+                    <div class="stengel"><div class="bluete"></div></div>
+                    <div class="stengel" style="transform: rotate(45deg); animation-delay: 0.3s;"><div class="bluete"></div></div>
+                </div>
+            </div>
+
+            <div class="main-content" id="birthdayContent">
+                <h1 class="birthday-title">Anılarımız</h1>
+                <p class="subtitle">Her anı bir hazine... 🎂✨</p>
+
+                <h2 class="gallery-title">Momente, die ich für immer im Herzen trage 📸</h2>
+                <div class="grid-gallery">
+                    <div class="polaroid"><img src="foto1.jpg"><div class="caption">Sen & Ben ✨</div></div>
+                    <div class="polaroid"><img src="foto2.jpg"><div class="caption">Aşk mideye gider 🍕❤️</div></div>
+                    <div class="polaroid"><img src="foto3.jpg"><div class="caption">Sadece seninle olan anlar 🌿</div></div>
+                    <div class="polaroid"><img src="foto4.jpg"><div class="caption">Kalbimdeki güneş ışığı ☀️</div></div>
+                    <div class="polaroid"><img src="foto5.jpg"><div class="caption">Büyülü geceler 🎆</div></div>
+                    <div class="polaroid polaroid-focus-left"><img src="foto6.jpg"><div class="caption">Seninle her yolculuk daha güzel 🚌💋</div></div>
+                </div>
+
+                <h2 class="gallery-title" style="margin-top: 100px;">Seni Sevmemin Küçük Birkaç Nedeni... 📦❤️</h2>
+                <div class="reasons-section">
+                    
+                    <div class="box-perspective-wrapper" onclick="neuerGrund()">
+                        <div class="contrast-box-3d" id="contrastBox">
+                            <div class="c-box-inside"></div>
+                            
+                            <div class="c-box-side-right"></div>
+                            
+                            <div class="c-box-front">
+                                <div class="c-ribbon-vertical"></div>
+                                <div class="c-box-text-content">
+                                    <h3>Neden Seni Seviyorum? 🤔🧐</h3>
+                                    <div class="c-heart-icon">❤️</div>
+                                </div>
+                            </div>
+                            
+                            <div class="c-box-lid">
+                                <div class="c-lid-top">
+                                    <div class="c-ribbon-lid-v"></div>
+                                    <div class="c-ribbon-lid-h"></div>
+                                    <div class="c-bow">
+                                        <div class="c-loop-l"></div>
+                                        <div class="c-loop-r"></div>
+                                        <div class="c-knot"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flying-heart-message" id="flyingLetter">
+                        <span id="reasonText">Buraya harika bir neden gelecek...</span>
+                    </div>
+                    
+                    <button class="reasons-btn" onclick="neuerGrund()">Bir Neden Göster ✨</button>
+                </div>
+
+                <div class="music-section">
+                    <h3>Bizim Şarkımız 🎵</h3>
+                    
+                    <div class="turntable-body" id="turntable" onclick="toggleMusic()">
+                        <div class="vinyl-record">
+                            <div class="vinyl-label-video">
+                                <video src="vinyl_video.mp4" autoplay loop muted playsinline></video>
+                                <div class="vinyl-center-hole"></div>
+                            </div>
+                        </div>
+                        <div class="turntable-arm"></div>
+                        <div class="turntable-switch"></div>
+                    </div>
+                </div>
+
+                <div class="portal-section">
+                    <h2>Eski Günlere Küçük Bir Yolculuk... ⏳</h2>
+                    <p>Zaman ne kadar hızlı geçse de, seninle attığımız her adım dün gibi aklımda.</p>
+                    <button class="portal-btn" onclick="switchToTimeline()">Zaman Tüneline Gir ✨</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-timeline">
+            <button class="timeline-back-btn" onclick="switchToMain()">← Geri Dön</button>
+            
+            <div class="timeline-header">
+                <h1>Zaman Tünelimiz</h1>
+                <p>Bizim hikayemiz, en güzel kilometre taşlarımız... ✨💛</p>
+            </div>
+
+            <div class="timeline-container" id="timelineContainer">
+                
+                <div class="timeline-item left">
+                    <div class="timeline-card">
+                        <h2>İlk Görüş 👀</h2>
+                        <span class="date">02.10.2024</span>
+                        <p>Sana çaktırmadan, gizlice o yakandaki isimliğe bakmıştım... İçimden senin Türk olduğunu gördüğümde nasıl sevindiğimi bir bilsen!</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-card">
+                        <h2>Cousinen-Check 📱</h2>
+                        <span class="date">21.10.2024</span>
+                        <p>Artık aramızdaki o güzel bağ iyice kendini belli ediyordu. Hatta o gün kuzenime senden bir video atmak zorunda kalmıştım, çünkü o bile çoktan senin adını ezberlemişti!</p>
+                        <video src="timeline_video.mp4" class="timeline-video-file" controls></video>
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-card">
+                        <h2>İlk Dedikodu Seansı 🤫</h2>
+                        <span class="date">01.04.2025</span>
+                        <p>Başkaları hakkında yaptığımız o ilk derin "dedikodu" (dedikodus)... Her saniyede seninle ne kadar mükemmel anlaştığımızı und kafamdaki o ideal insana nasıl da birebir uyduğunu daha net görüyordum.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-card">
+                        <h2>Netleşen Duygular & Melih 👀💥</h2>
+                        <span class="date">31.07.2025</span>
+                        <p>Şu noteneinsichten (not incelemeleri) dönemindeki upuzun sohbetlerimizden sonra içimde bir şeyler tamamen koptu: Ben seni gerçekten, tamamen istiyorum! (Bu arada o sıra Melih'e de acayip kuruluyordum, ne o öyle samimi samimi yakınlaşmalar falan...)</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-card">
+                        <h2>Gerçek İlk Adım & Uyuyakalmak 📞💤</h2>
+                        <span class="date">17. & 18.10.2025</span>
+                        <p>İlk defa tamamen net niyetlerle, içimden geldiği gibi seninle chatleşmeye başladım. Hızımızı alamayıp gece yarılarına kadar telefonda konuştuk. Sonra benim şarjım bitti, telephone kapandı. Sen de o sırada telefonda uyuya kalmıştın... Yanlışlıkla kapattım sanıp nasıl korktum, bir de gittim Nima'ya yazdım sen ulaşılamaz olunca!</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-card">
+                        <h2>İlk Buluşma / Das 1. Treffen ☕❤️</h2>
+                        <span class="date">15.11.2025</span>
+                        <p>Sonunda bir şekilde zaman yaratıp seninle baş başa dışarı çıkabilmiştim. Her şey o kadar büyüleyici und güzeldi ki, buluşma bittiğinde "Acaba her şeyi berbat ettim mi?" diye içten içe korkudan öldüm. Çünkü o an bile sana çoktan fena bağlanmıştım.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-card">
+                        <h2>Fırtınadan Sonraki Ders ⛈️✨</h2>
+                        <span class="date">29.12.2025</span>
+                        <p>Ailevi meseleler yüzünden bir türlü zaman bulamadığım, aramızın açıldığı und daha tam başlayamadan neredeyse bitme noktasına geldiğimiz o zor anlar... Kötü olan her şeyi arkamızda bıraktık ama bu olay bana dev bir ders verdi: Ne olursa olsun, senin için her zaman vakit vardır. Seni kaybetme korkusu düşüncesi bile beni delirtmeye yetti.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-card">
+                        <h2>O Büyük Gün: Sevgililik Teklifi 🌹💍</h2>
+                        <span class="special-date">14.02.2026 (Sevgililer Günü) <span class="beating-heart">❤️</span></span>
+                        <p>Bütün o ağır sınav streslerini, vizeleri geride bıraktıktan sonra Sevgililer Günü'nde ilk kez baş başa çıktık. Ve o gün sana "Benimle olur musun?" diye sordum. Kabul ediyorum, birazcık heyecanlanmış olabilirim... Und evet, yalan yok; bana her sarıldığında kalbim hala tam olarak o günkü gibi deli gibi çarpıyor.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-card">
+                        <h2>İlk Öpücük 😘📜</h2>
+                        <span class="date">26.02.2026</span>
+                        <p>Bizim törelerimize göre sen artık benimsin! 😉 Evvet, o unforgettable ilk öpücük... İşte o günden beri, durmaksızın, her gün daha da büyüyerek hikayemizi yazmaya devam ediyoruz.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-card">
+                        <h2>Bizim Dünyamız ✨</h2>
+                        <p>Zamanın und tarihlerin önemsiz kaldığı, sadece seninle benim olduğum o harika anlardan biri...</p>
+                        <img src="timeline_bild1.jpg" class="timeline-img" alt="Anı">
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-card">
+                        <h2>Gülüşünde Huzur Bulduğum 🤍</h2>
+                        <p>Kameraya her baktığında dünyayı güzelleştirdiğin o saniyeler.</p>
+                        <img src="timeline_bild2.jpg" class="timeline-img" alt="Anı">
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-card">
+                        <h2>İyi Ki Yanımdasın 👩‍❤️‍👨</h2>
+                        <p>Birlikte paylaştığımız her kahkaha, attığımız her adım hafızamda sonsuza dek saklı.</p>
+                        <img src="timeline_bild3.jpg" class="timeline-img" alt="Anı">
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-card">
+                        <h2>Sonsuza Doğru... ♾️❤️</h2>
+                        <p>Gelecekte buraya eklenecek daha yüzlerce hatıraya, her yaşındayken ellerini hiç bırakmamak dileğiyle.</p>
+                        <video src="timeline_video2.mp4" class="timeline-video-file" controls></video>
+                    </div>
+                </div>
+
+                <div class="timeline-arrow-down"></div>
+
+            </div>
+
+            <div class="timeline-footer-box">
+                <p>Bu zaman çizgisi her geçen gün daha da uzayacak ve sadece daha güzel anılarla, kahkahalarla ve unutulmaz anlarla dolacak. Seni mutlu etmek ve bu hikâyeyi birlikte güzelleştirmek için elimden gelen her şeyi yapacağım. Umarım bir gün dönüp baktığımızda, birlikte geçirdiğimiz her anın ne kadar değerli olduğunu tekrar tekrar hissederiz… ❤️</p>
+            </div>
+
+            <div class="timeline-bottom-nav">
+                <button class="timeline-bottom-btn" onclick="switchToMain()">← Ana Sayfaya Dön</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        const gruende = [
+            "Çünkü en kötü günümde bile sadece gülüşünle içimi ısıtmayı başarıyorsun.",
+            "Çünkü seninle geçen her saniye, hayatımın en değerli anı haline geliyor.",
+            "Çünkü kalbin o kadar güzel ve saf ki, dünyamı güzelleştiriyorsun.",
+            "Çünkü sesini duyduğum an tüm huzursuzluklarım uçup gidiyor.",
+            "Çünkü bana daha önce hiç hissetmediğim kadar özel und değerli hissettiriyorsun.",
+            "Çünkü gözlerinin içine baktığımda geleceğimi und evimi görüyorum.",
+            "Çünkü her halinle, sadece kendin olduğun için seni çok seviyorum.",
+            "Çünkü seninle saçmalamak bile dünyanın en eğlenceli aktivitesi.",
+            "Çünkü her düştüğümde elimi tutup beni ayağa kaldıracak gücü veriyorsun.",
+            "Çünkü hayatıma dokunduğun andan beri beni daha iyi bir insan yaptın."
+        ];
+
+        const music = document.getElementById('bgMusic');
+        const widget = document.getElementById('musicWidget');
+        const widgetText = document.getElementById('widgetText');
+        const turntable = document.getElementById('turntable');
+        const pageContainer = document.getElementById('pageContainer');
+
+        function playMusic() {
+            music.play().then(() => {
+                widget.classList.add('music-playing');
+                turntable.classList.add('music-playing');
+                widgetText.innerText = "Musik läuft";
+            }).catch(err => {
+                console.log("Autoplay blockiert, wartet auf Interaktion.");
+            });
+        }
+
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                widget.classList.add('music-playing');
+                turntable.classList.add('music-playing');
+                widgetText.innerText = "Musik läuft";
+            } else {
+                music.pause();
+                widget.classList.remove('music-playing');
+                turntable.classList.remove('music-playing');
+                widgetText.innerText = "Musik aus";
+            }
+        }
+
+        function openEnvelope() {
+            document.getElementById('briefUmschlag').classList.add('open');
+        }
+
+        function zeigeTextKasten(event) {
+            event.stopPropagation(); 
+            playMusic();
+
+            /* AUSLÖSEN DES INTERAKTIVEN KONFETTI-REGENS */
+            try {
+                var end = Date.now() + (1 * 1000); // 2 Sekunden lang Konfetti schießen
+                (function frame() {
+                    confetti({ particleCount: 4, angle: 60, spread: 55, origin: { x: 0, y: 0.8 } });
+                    confetti({ particleCount: 4, angle: 120, spread: 55, origin: { x: 1, y: 0.8 } });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } catch(e) { console.log("Konfetti konnte nicht geladen werden."); }
+
+            const envelope = document.getElementById('briefUmschlag');
+            const kastenOverlay = document.getElementById('textKastenOverlay');
+            const blumen = document.getElementById('animierteBlumen');
+            
+            envelope.classList.add('hidden');
+            
+            setTimeout(() => {
+                kastenOverlay.style.display = 'block';
+                setTimeout(() => {
+                    kastenOverlay.classList.add('visible');
+                    blumen.classList.add('visible');
+                }, 50);
+            }, 600);
+        }
+
+        function zeigeErinnerungen() {
+            const content = document.getElementById('birthdayContent');
+            const intro = document.getElementById('introPage');
+            
+            intro.style.height = 'auto';
+            content.style.display = 'block';
+            
+            setTimeout(() => {
+                content.classList.add('visible');
+                content.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        function neuerGrund() {
+            const box = document.getElementById('contrastBox');
+            const letter = document.getElementById('flyingLetter');
+            const textElement = document.getElementById('reasonText');
+            
+            box.classList.remove('shake-contrast');
+            letter.classList.remove('fly-up-contrast');
+            
+            void box.offsetWidth; 
+            
+            box.classList.add('shake-contrast');
+            
+            const zufallsIndex = Math.floor(Math.random() * gruende.length);
+            textElement.innerText = gruende[zufallsIndex];
+            
+            letter.classList.add('fly-up-contrast');
+        }
+
+        /* NAVIGATION ZWISCHEN HAUPTSEITE UND TIMELINE */
+        function switchToTimeline() {
+            pageContainer.style.transform = 'translateX(-100vw)';
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            setTimeout(checkTimelineScroll, 300);
+        }
+
+        function switchToMain() {
+            pageContainer.style.transform = 'translateX(0)';
+            setTimeout(() => {
+                const portal = document.querySelector('.portal-section');
+                portal.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        /* EFFEKT: TIMELINE ITEMS PLOPPEN BEIM SCROLLEN AUF */
+        const timelineItems = document.querySelectorAll('.timeline-item');
+
+        function checkTimelineScroll() {
+            if (pageContainer.style.transform === 'translateX(-100vw)') {
+                const triggerBottom = window.innerHeight * 0.85;
+                
+                timelineItems.forEach(item => {
+                    const itemTop = item.getBoundingClientRect().top;
+                    if (itemTop < triggerBottom) {
+                        item.classList.add('show');
+                    }
+                });
+            }
+        }
+
+        window.addEventListener('scroll', checkTimelineScroll);
+    </script>
+</body>
+</html>
