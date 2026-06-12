@@ -921,7 +921,7 @@
             box-shadow: 0 15px 30px rgba(212,175,55,0.4);
         }
 
-        /* ─── HOCHWERTIGES 3D BUCH DESIGN ─── */
+       /* ─── HOCHWERTIGES 3D BUCH DESIGN ─── */
         .book-section-wrapper {
             width: 100%;
             margin-top: 80px;
@@ -957,7 +957,14 @@
 
         .book.opened { transform: translateX(210px); }
 
-        .book .pages { width: 100%; height: 100%; position: absolute; z-index: 10; }
+        /* KORREKTUR 1: Auch der .pages Container MUSS den 3D-Raum erhalten */
+        .book .pages { 
+            width: 100%; 
+            height: 100%; 
+            position: absolute; 
+            z-index: 10; 
+            transform-style: preserve-3d; 
+        }
 
         .book .page-wrapper {
             position: absolute;
@@ -967,6 +974,8 @@
             transform-style: preserve-3d;
             transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 5;
+            /* KORREKTUR 2: Verhindert Flackern in Webkit-Browsern wie Safari/Chrome */
+            backface-visibility: hidden; 
         }
 
         .book .page-front, .book .page-back {
@@ -1000,11 +1009,14 @@
             border-radius: 14px 0 0 14px;
         }
 
+        /* KORREKTUR 3: Click-Zones flach auf dem Screen halten, damit sie sich beim Blättern nicht wegdrehen */
         .book .page-click-zone-left,
         .book .page-click-zone-right {
             position: absolute;
             top: 0; height: 100%; width: 50%;
-            cursor: pointer; z-index: 30; 
+            cursor: pointer; 
+            z-index: 30; 
+            transform: translateZ(100px); /* Schiebt die Klickflächen leicht vor den 3D-Raum */
         }
         .book .page-click-zone-left { left: -100%; }
         .book .page-click-zone-right { right: 0; }
@@ -1048,13 +1060,15 @@
             font-size: 4.5rem; filter: drop-shadow(0 0 15px rgba(212,175,55,0.6)); margin-top: 20px;
         }
 
+        /* Schichtensteuerung für die geschlossenen/geöffneten Seiten */
         .page-wrapper.w1 { z-index: 6; }
         .page-wrapper.w2 { z-index: 5; }
         .page-wrapper.w3 { z-index: 4; }
 
-        .page-wrapper.flipped.w1 { transform: rotateY(-180deg); z-index: 1; }
-        .page-wrapper.flipped.w2 { transform: rotateY(-180deg); z-index: 2; }
-        .page-wrapper.flipped.w3 { transform: rotateY(-180deg); z-index: 3; }
+        /* KORREKTUR 4: Erhöhter z-index im geflippten Zustand, damit die linke Buchhälfte sauber oben liegt */
+        .page-wrapper.flipped.w1 { transform: rotateY(-180deg); z-index: 10; }
+        .page-wrapper.flipped.w2 { transform: rotateY(-180deg); z-index: 11; }
+        .page-wrapper.flipped.w3 { transform: rotateY(-180deg); z-index: 12; }
 
         /* SÜRPRIZ VIDEO BUTTON */
         .video-trigger-sidebar {
@@ -1557,7 +1571,251 @@
         </div>
     </div>
 
-    <div class="video-overlay-modal" id="surpriseVideoModal">
+<!-- ========================================== -->
+    <!-- INTERAKTIVES HERZ-MEDAILLON START          -->
+    <!-- ========================================== -->
+    <div class="locket-container">
+      <p class="locket-hint">Madalyonu açmak için üzerine tıkla... ✨</p>
+      
+      <!-- DIE HALSKETTE & ÖSE -->
+      <div class="necklace-chain"></div>
+      <div class="locket-loop"></div>
+
+      <div class="locket" id="locket" onclick="toggleLocket()">
+        
+        <!-- RÜCKSEITE / BASIS (Bleibt fest hinten, enthält den tiefen Goldrand und das Foto) -->
+        <div class="locket-base-heart">
+          <div class="locket-inner-rim">
+            <div class="locket-photo-container">
+              <img src="bild.kette.jpg" alt="Bizim Fotoğrafımız">
+            </div>
+          </div>
+        </div>
+
+        <!-- VORDERSEITE / KLAPPE (Klappt nach links auf) -->
+        <div class="locket-door-wrapper">
+          <div class="locket-door">
+            
+            <!-- Die geschlossene, glänzende Gold-Oberfläche mit Gravur oben drauf -->
+            <div class="door-front-heart">
+              <div class="door-front-emboss">
+                <span class="front-engraving-text">Cocukluk hayalin bu muydu?</span>
+              </div>
+            </div>
+            
+            <!-- Die geöffnete Innenseite der linken Klappe mit den zweizeiligen Koordinaten -->
+            <div class="door-back-heart">
+              <div class="door-back-inner">
+                <span class="engraving-text coordinates">
+                  48°09'16.5"N<br>11°33'24.0"E
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <style>
+    /* 1. CONTAINER & SCHMUCK-UMGEBUNG */
+    .locket-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 40px auto 80px auto;
+      perspective: 2000px;
+      position: relative;
+    }
+    
+    .locket-hint {
+      font-family: 'Georgia', serif;
+      font-style: italic;
+      color: #ffffff;
+      margin-bottom: 80px;
+      font-size: 1.1rem;
+      text-align: center;
+      user-select: none;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    /* DIE SAUBERE HALSKETTE (Glieder-Optik) */
+    .necklace-chain {
+      position: absolute;
+      top: 40px;
+      width: 4px;
+      height: 90px;
+      background: repeating-linear-gradient(0deg, #d4af37, #d4af37 4px, #aa820a 4px, #aa820a 8px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      z-index: 1;
+      border-radius: 2px;
+    }
+
+    /* DIE GOLDENE ÖSE AM MEDAILLON */
+    .locket-loop {
+      position: absolute;
+      top: 122px;
+      width: 18px;
+      height: 24px;
+      background: linear-gradient(90deg, #aa820a, #fffcf0, #d4af37);
+      border-radius: 50% 50% 0 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.6);
+      z-index: 2;
+    }
+
+    /* 2. DAS HAUPTMEDAILLON */
+    .locket {
+      position: relative;
+      width: 250px;
+      height: 220px;
+      cursor: pointer;
+      user-select: none;
+      z-index: 3;
+    }
+
+    /* DIE MATHEMATISCH EXAKTE HERZFORM FÜR ALLE LAYERS */
+    .locket-base-heart, .door-front-heart, .door-back-heart {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      clip-path: path("M 125,45 C 125,45 55,-15 10,35 C -25,80 40,145 125,215 C 210,145 275,80 240,35 C 195,-15 125,45 125,45 Z");
+    }
+
+    /* RECHTE BASIS (Unterseite mit Gehäuse-Tiefe) */
+    .locket-base-heart {
+      background: linear-gradient(135deg, #b8860b 0%, #d4af37 50%, #684f04 100%);
+      z-index: 1;
+      box-shadow: 5px 15px 25px rgba(0,0,0,0.6);
+    }
+
+    /* Der dicke, plastische Innenrand der Kette (Rahmen-Effekt) */
+    .locket-inner-rim {
+      position: absolute;
+      top: 8px; left: 8px; right: 8px; bottom: 8px;
+      background: linear-gradient(135deg, #684f04, #d4af37, #b8860b);
+      clip-path: path("M 117,37 C 117,37 52,-10 10,35 C -21,76 38,136 117,201 C 196,136 255,76 224,35 C 182,-10 117,37 117,37 Z");
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Das eingebettete Foto-Fenster (liegt tiefer in der Fassung) */
+    .locket-photo-container {
+      position: absolute;
+      top: 4px; left: 4px; right: 4px; bottom: 4px;
+      background: #222;
+      clip-path: path("M 113,33 C 113,33 50,-5 10,35 C -17,72 36,128 113,189 C 190,128 243,72 216,35 C 176,-5 113,33 113,33 Z");
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.8);
+    }
+
+    .locket-photo-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* Verschiebt den Fokus nach unten, um mehr vom unteren Teil zu zeigen */
+      object-position: center 85%; 
+      transform: scale(1.05);
+    }
+
+    /* 3. FLÜGEL- / TÜROMECHANISMUS */
+    .locket-door-wrapper {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 5;
+      transform-origin: left center;
+      transition: transform 1.5s cubic-bezier(0.25, 1, 0.3, 1);
+      transform-style: preserve-3d;
+    }
+
+    .locket-door {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+    }
+
+    .door-front-heart, .door-back-heart {
+      backface-visibility: hidden;
+    }
+
+    /* GOLDENE OBERSEITE (Edel poliert mit Gravur-Zentrierung) */
+    .door-front-heart {
+      background: linear-gradient(135deg, #fffcf0 0%, #d4af37 45%, #a37f08 75%, #f3e5ab 100%);
+      z-index: 2;
+    }
+
+    /* 3D-Wölbung auf dem Deckel + Text-Ausrichtung */
+    .door-front-emboss {
+      position: absolute;
+      top: 6px; left: 6px; right: 6px; bottom: 6px;
+      border: 1px solid rgba(255,255,255,0.4);
+      clip-path: path("M 119,39 C 119,39 53,-12 10,35 C -23,78 39,139 119,204 C 199,139 261,78 228,35 C 185,-12 119,39 119,39 Z");
+      background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.05) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* DIE GRAVUR AUF DER VORDERSEITE */
+    .front-engraving-text {
+      font-family: 'Georgia', serif;
+      font-style: italic;
+      font-weight: bold;
+      font-size: 0.85rem;
+      color: #443402;
+      text-shadow: 1px 1px 1px rgba(255,255,255,0.4), -1px -1px 1px rgba(0,0,0,0.6);
+      text-align: center;
+      padding: 0 25px;
+      line-height: 1.3;
+      transform: translateY(15px);
+      user-select: none;
+    }
+
+    /* INNENSEITE DER LINKEN KLAPPE */
+    .door-back-heart {
+      background: linear-gradient(225deg, #a37f08 0%, #d4af37 55%, #fffcf0 100%);
+      transform: rotateY(180deg);
+      z-index: 1;
+    }
+
+    /* Eleganter Innenrahmen für die Gravurseite */
+    .door-back-inner {
+      position: absolute;
+      top: 8px; left: 8px; right: 8px; bottom: 8px;
+      clip-path: path("M 117,37 C 117,37 52,-10 10,35 C -21,76 38,136 117,201 C 196,136 255,76 224,35 C 182,-10 117,37 117,37 Z");
+      background: linear-gradient(135deg, #856603, #d4af37, #524002);
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* DIE GRAVUR AUF DER INNENSEITE (Koordinaten untereinander) */
+    .engraving-text.coordinates {
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      font-size: 0.8rem;
+      color: #3d2f01;
+      text-shadow: 1px 1px 1px rgba(255,255,255,0.3), -1px -1px 1px rgba(0,0,0,0.7);
+      text-align: center;
+      line-height: 1.4; /* Angenehmer Abstand zwischen den beiden Zeilen */
+      /* Perfekt austariert für den linken Flügel */
+      transform: translateX(18px) translateY(-5px); 
+    }
+
+    /* AUTOMATISCHER TRIGGER BEIM ÖFFNEN */
+    .locket.open .locket-door-wrapper {
+      transform: rotateY(-180deg);
+    }
+    </style>
+    </style>    </style>    <div class="video-overlay-modal" id="surpriseVideoModal">
         <div class="video-wrapper-inner">
             <button class="close-video-btn" onclick="closeSurpriseVideo()">X Kapat</button>
             <video id="surpriseVideo" src="zusammenschnitt.mp4" controls playsinline></video>
@@ -1567,13 +1825,18 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
+        function toggleLocket() {
+            const locket = document.getElementById('locket');
+            locket.classList.toggle('open');
+        }
+
         const gruende = [
             "Çünkü en kötü günümde bile sadece gülüşünle içimi ısıtmayı başarıyorsun.",
             "Çünkü seninle geçen her saniye, hayatımın en değerli anı haline geliyor.",
             "Çünkü kalbin o kadar güzel ve saf ki, dünyamı güzelleştiriyorsun.",
             "Çünkü sesini duyduğum an tüm huzursuzluklarım uçup gidiyor.",
             "Çünkü bana daha önce hiç hissetmediğim kadar özel ve değerli hissettiriyorsun.",
-            "Çünkü gözlerinin içine baktığımda geleceğimi ve evimi görüyorum.",
+            "Çünkü gözlerinin içine baktığımda geleceğimi und evimi görüyorum.",
             "Çünkü her halinle, sadece kendin olduğun için seni çok seviyorum.",
             "Çünkü seninle saçmalamak bile dünyanın en eğlenceli aktivitesi.",
             "Çünkü her düştüğümde elimi tutup beni ayağa kaldıracak gücü veriyorsun.",
