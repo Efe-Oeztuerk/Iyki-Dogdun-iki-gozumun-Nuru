@@ -984,11 +984,13 @@
 
 /* ─── HIER GENAU EINFÜGEN ─── */
 /* Z-Index Steuerung: Das Cover (w1) liegt ganz oben, danach w2 (Jarai) etc. */
-.book .page-wrapper.w1 { z-index: 5; }
-.book .page-wrapper.w2 { z-index: 4; }
-.book .page-wrapper.w3 { z-index: 3; }
-.book .page-wrapper.w4 { z-index: 2; }
-.book .page-wrapper.w5 { z-index: 1; }
+.book .page-wrapper.w1 { z-index: 6; }
+.book .page-wrapper.w2 { z-index: 5; }
+.book .page-wrapper.w3 { z-index: 4; }
+.book .page-wrapper.w4 { z-index: 3; }
+.book .page-wrapper.w5 { z-index: 2; }
+.book .page-wrapper.w6 { z-index: 1; }
+.book .page-wrapper.w7 { z-index: 0; }
 
 /* Wenn eine Seite umgeblättert (.flipped) wurde, muss sie nach ganz hinten fallen */
 .book .page-wrapper.flipped {
@@ -1078,12 +1080,14 @@
             font-size: 4.5rem; filter: drop-shadow(0 0 15px rgba(212,175,55,0.6)); margin-top: 20px;
         }
 
-       /* Ersetze die alten w1-w3 Regeln mit diesen 5 Ebenen: */
+       /* Ersetze die alten w1-w3 Regeln mit diesen 6 Ebenen: */
 .page-wrapper.w1 { z-index: 8; }
 .page-wrapper.w2 { z-index: 7; }
 .page-wrapper.w3 { z-index: 6; }
 .page-wrapper.w4 { z-index: 5; }
 .page-wrapper.w5 { z-index: 4; }
+.page-wrapper.w6 { z-index: 3; }
+.page-wrapper.w7 { z-index: 2; }
 
 /* Ersetze auch die .flipped-Regeln direkt darunter: */
 .page-wrapper.flipped.w1 { transform: rotateY(-180deg); z-index: 10; }
@@ -1091,6 +1095,8 @@
 .page-wrapper.flipped.w3 { transform: rotateY(-180deg); z-index: 12; }
 .page-wrapper.flipped.w4 { transform: rotateY(-180deg); z-index: 13; }
 .page-wrapper.flipped.w5 { transform: rotateY(-180deg); z-index: 14; }
+.page-wrapper.flipped.w6 { transform: rotateY(-180deg); z-index: 15; }
+.page-wrapper.flipped.w7 { transform: rotateY(-180deg); z-index: 16; }
 
         /* SÜRPRIZ VIDEO BUTTON */
         .video-trigger-sidebar {
@@ -1458,37 +1464,73 @@ Hayatına dokunabildiğim ilk doğum gününü yanında kutlayabildiğim için k
     </div>
 
     <div class="page-wrapper w3" id="b3">
-        <div class="page-front" style="background: linear-gradient(to right, #e8e4de 0%, #fffdfa 100%); padding: 30px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
+        <div class="page-front" style="background: linear-gradient(to right, #e8e4de 0%, #fffdfa 100%); padding: 25px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
             <div>
-                <h3 style="font-size: 2rem; color: #6b1d2f; margin-top: 10px;">Noara'dan...</h3>
-                <p style="font-size: 1.1rem; line-height: 1.5; color: #4a4230; text-align: left; margin-top: 20px;">
-                    "Doğum günün kutlu olsun canım! Seninle güldüğümüz, eğlendiğimiz her an çok özel. Yeni yaşında tüm dileklerin gerçek olsun, seni çok seviyoruz!"
+                <h3 style="color: #6b1d2f; font-size: 2.2rem; margin-bottom: 10px;">Von Noara...</h3>
+                <p style="font-size: 0.85rem; line-height: 1.45; color: #4a4230; text-align: left;">
+                    Happy Birthday Ceyda!!! Wie du weißt kann ich meine Gefühle nicht immer gut in Worte fassen, aber für dich lass ich jetzt mein Herz sprechen. Ich bin so dankbar dich in meinem Leben zu haben! Was ich so sehr an dir liebe ist deine natürlich lustige Art. Du haust immer einen lustigen Spruch raus und legst immer eine Schippe drauf bis ich heule vor lachen.
                 </p>
             </div>
-            <span class="flip-hint" style="align-self: flex-end;">Çevir →</span>
+            <span class="flip-hint" style="align-self: flex-end;">Blättern →</span>
         </div>
-        <div class="page-back" style="background: linear-gradient(to left, #e8e4de 0%, #fffdfa 100%); padding: 30px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
-            <div>
-                <h3 style="color: #6b1d2f; font-size: 2.2rem; margin-bottom: 15px;">Nima'dan...</h3>
-                <p style="font-size: 1.1rem; line-height: 1.5; color: #4a4230; text-align: left;">
-                    "Geçmişten bugüne biriktirdiğimiz tüm güzel anlar, gelecekteki kahkahalarımızın temeli olsun. İyi ki hayatımızdasın!"
+        <div class="page-back" style="background: linear-gradient(to left, #e8e4de 0%, #fffdfa 100%); padding: 20px 20px 40px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box; align-items: center;">
+            <div style="width: 100%;">
+                <p style="font-size: 0.82rem; line-height: 1.45; color: #4a4230; text-align: left; margin-bottom: 8px;">
+                    Aber man kann nicht nur Spaß mit dir haben. Du hast immer einen schlauen Ratschlag parat egal worum es geht, kümmerst dich um die Leute die du liebst und man hat den besten deep talk mit dir! Ich kann mir ehrlich kein Leben ohne dich vorstellen. Ich liebe dich einfach soo und bin dankbar dich zu haben!!! Bleib die Baddie die du bist und fühlt dich geküsst muah!
                 </p>
+                <p style="font-size: 0.9rem; color: #6b1d2f; font-weight: bold; text-align: left;">Deine Noara 🤍</p>
             </div>
-            <span class="flip-hint" style="align-self: flex-start;">← Geri</span>
+            <img src="noara.jpg" alt="Noara und Ceyda" style="width: 60%; height: auto; max-height: 100px; object-fit: cover; object-position: top; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.15); margin-bottom: 8px;">
+            <span class="flip-hint" style="align-self: flex-start; position: absolute; bottom: 20px; left: 20px;">← Zurück</span>
         </div>
     </div>
 
     <div class="page-wrapper w4" id="b4">
-        <div class="page-front" style="background: linear-gradient(to right, #e8e4de 0%, #fffdfa 100%); padding: 30px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
+        <div class="page-front" style="background: linear-gradient(to right, #e8e4de 0%, #fffdfa 100%); padding: 25px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
             <div>
-                <h3 style="color: #6b1d2f; font-size: 2.2rem; margin-bottom: 15px;">Laura'dan...</h3>
-                <p style="font-size: 1.1rem; line-height: 1.5; color: #4a4230; text-align: left;">
-                    "Sen her şeyin en güzelini hak ediyorsun. Yeni yaşın sana neşe ve huzur getirsin. Şimdi son bir kez daha çevir..."
+                <h3 style="color: #6b1d2f; font-size: 2.2rem; margin-bottom: 10px;">Von Nima...</h3>
+                <p style="font-size: 0.82rem; line-height: 1.45; color: #4a4230; text-align: left;">
+                    Meine liebe Ceysen, ich habe dich damals in der 11. Klasse kennengelernt und seit dem kann ich mir nicht vorstellen, dass du nicht in meinem Leben bist. Du bist meine beste Freundin und ich bin so froh, dass ich damals den Mut gefunden habe und dich angesprochen habe. Ich wusste vom ersten Moment, dass du extrem witzig sein wirst und dass wir uns auf Anhieb verstehen.
                 </p>
             </div>
-            <span class="flip-hint" style="align-self: flex-end;">Sonraki Sayfa →</span>
+            <span class="flip-hint" style="align-self: flex-end;">Blättern →</span>
         </div>
-        <div class="page-back" style="background: linear-gradient(to left, #e8e4de 0%, #fffdfa 100%); padding: 25px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
+        <div class="page-back" style="background: linear-gradient(to left, #e8e4de 0%, #fffdfa 100%); padding: 20px 20px 40px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box; align-items: center;">
+            <div style="width: 100%;">
+                <p style="font-size: 0.82rem; line-height: 1.45; color: #4a4230; text-align: left; margin-bottom: 8px;">
+                    Ich wusste nicht, dass es so eine schöne und bedeutsame Freundschaft daraus entsteht. Du wirst jetzt 23 und ich hoffe ich kann mit dir noch unendlich viele Geburtstage feiern. Du bist wirklich eine Schwester für mich und die zukünftige coole Tante meiner Kinder. Ich wünsche dir wirklich nur das Beste auf dieser Welt! 🫶🏻
+                </p>
+                <p style="font-size: 0.9rem; color: #6b1d2f; font-weight: bold; text-align: left;">Deine Nima ❤️❤️❤️</p>
+            </div>
+            <img src="nima.jpg" alt="Nima und Ceyda" style="width: 60%; height: auto; max-height: 100px; object-fit: cover; object-position: top; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.15); margin-bottom: 8px;">
+            <span class="flip-hint" style="align-self: flex-start; position: absolute; bottom: 20px; left: 20px;">← Zurück</span>
+        </div>
+    </div>
+
+    <div class="page-wrapper w5" id="b5">
+        <div class="page-front" style="background: linear-gradient(to right, #e8e4de 0%, #fffdfa 100%); padding: 25px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
+            <div>
+                <h3 style="color: #6b1d2f; font-size: 2.2rem; margin-bottom: 10px;">Von Laura...</h3>
+                <p style="font-size: 0.82rem; line-height: 1.45; color: #4a4230; text-align: left;">
+                    Liebe Ceyda, ich wünsche dir alles alles alles Gute zu deinem Geburtstag! Ich bin unglaublich dankbar, dass wir uns die letzten paar Jahre begleiten durften. Mit dir wird jede Hürde zu einem kleinen Kieselstein und jedes Gefühlschaos genauestens analysiert und therapiert.
+                </p>
+            </div>
+            <span class="flip-hint" style="align-self: flex-end;">Blättern →</span>
+        </div>
+        <div class="page-back" style="background: linear-gradient(to left, #e8e4de 0%, #fffdfa 100%); padding: 20px 20px 40px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box; align-items: center;">
+            <div style="width: 100%;">
+                <p style="font-size: 0.78rem; line-height: 1.45; color: #4a4230; text-align: left; margin-bottom: 8px;">
+                    Deine Ehrlichkeit, Güte, Selbstlosigkeit und Fähigkeit zu vergeben ist bewundernswert und inspiriert uns alle bessere Menschen zu werden. Egal was kommt – wir haben einander für die guten und schlechten Zeiten. Ich hoffe, dass all deine Herzenswünsche in Erfüllung gehen und alle Sorgen sich in Luft auflösen. &lt;3
+                </p>
+                <p style="font-size: 0.9rem; color: #6b1d2f; font-weight: bold; text-align: left;">Deine Laura 🤍</p>
+            </div>
+            <img src="laura.jpg" alt="Laura und Ceyda" style="width: 60%; height: auto; max-height: 100px; object-fit: cover; object-position: top; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.15); margin-bottom: 8px;">
+            <span class="flip-hint" style="align-self: flex-start; position: absolute; bottom: 20px; left: 20px;">← Zurück</span>
+        </div>
+    </div>
+
+    <div class="page-wrapper w6" id="b6">
+        <div class="page-front" style="background: linear-gradient(to right, #e8e4de 0%, #fffdfa 100%); padding: 25px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
             <div>
                 <h3 style="color: #6b1d2f; font-size: 2rem; margin-bottom: 8px;">Efe'den... ❤️</h3>
                 <p style="font-size: 0.82rem; line-height: 1.35; color: #4a4230; text-align: left;">
@@ -1497,28 +1539,15 @@ Hayatına dokunabildiğim ilk doğum gününü yanında kutlayabildiğim için k
                     Çünkü bu 21 yıllık hayatımda başıma gelen en güzel şey sensin. Hayatımdaki o eksik parçayı sen tamamladın. Seni severken hissettiklerimi tarif etmek gerçekten çok zor. Sanki yıllarca emek verdiğin bir hayaline sonunda kavuşmuşsun gibi... Ya da uzun zamandır karanlıkta yürürken bir anda güneşi görmüşsün gibi...
                 </p>
             </div>
-            <span class="flip-hint" style="align-self: flex-end;">Devamını Oku →</span>
-        </div>
-    </div>
-
-    <div class="page-wrapper w5" id="b5">
-        <div class="page-front" style="background: linear-gradient(to right, #e8e4de 0%, #fffdfa 100%); padding: 25px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
-            <div>
-                <p style="font-size: 0.82rem; line-height: 1.35; color: #4a4230; text-align: left; margin-top: 15px;">
-                    Nefes almak bile daha güzel geliyor. Kalbim her seni düşündüğünde yeniden atmaya başlıyor. Ama biliyor musun? Bunların hepsini toplasan bile seni sevmenin verdiği mutluluğun yanında hiçbir şey kalıyor. Sen, en kötü günümde bile yüzümü güldüren insansın. Ne yaşarsam yaşayayım, bana huzur veren, beni kendime getiren, içimi sıcacık yapan hep sensin.<br><br>
-                    Şu an burada oturup seni neden sevdiğimi anlatacak binlerce şey yazabilirim. Ama ben bunları sadece söylemek istemiyorum... Sana ömrüm boyunca hissettirmek istiyorum. Hani en başta demiştim ya, büyük hayallerim yoktu diye... Belki hâlâ öyle çok büyük hayallerim yok. Ama şunu fark ettim ki, dünyanın en büyük hayalini ben seninle gerçekleştirdim. Çünkü benim en büyük hayalim, seni sevmek ve hayatımın geri kalanında da hep senin yanında olabilmekmiş.
-                </p>
-            </div>
             <span class="flip-hint" style="align-self: flex-end;">Son Sayfa →</span>
         </div>
-        <!-- FEHLER BEHOBEN: Hier wurde "page-front" zu "page-back" geändert und die Gradient-Richtung umgedreht -->
         <div class="page-back" style="background: linear-gradient(to left, #e8e4de 0%, #fffdfa 100%); padding: 25px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
             <div style="display: flex; flex-direction: column; justify-content: center; height: 100%;">
                 <p style="font-size: 0.82rem; line-height: 1.35; color: #4a4230; text-align: left; margin-bottom: 5px;">
-                    Bu dünyada seni benden daha çok sevebilecek birinin olduğuna inanmıyorum. Seni her geçen gün ilk günkü gibi değil, her geçen gün daha da fazla seviyorum. İyi ki varsın, güzelim... İyi ki seni sevmişim. İyi ki hayatıma girmişsin. Ve bugün...
+                    Nefes almak bile daha güzel geliyor. Kalbim her seni düşündüğünde yeniden atmaya başlıyor. Ama biliyor musun? Bunların hepsini toplasan bile seni sevmenin verdiği mutluluğun yanında hiçbir şey kalıyor. Sen, en kötü günümde bile yüzümü güldüren insansın. Ne yaşarsam yaşayayım, bana huzur veren, beni kendime getiren, içimi sıcacık yapan hep sensin.<br><br>
+                    Şu an burada oturup seni neden sevdiğimi anlatacak binlerce şey yazabilirim. Ama ben bunları sadece söylemek istemiyorum... Sana ömrüm boyunca hissettirmek istiyorum. Hani en başta demiştim ya, büyük hayallerim yoktu diye... Belki hâlâ öyle çok büyük hayallerim yok. Ama şunu fark ettim ki, dünyanın en büyük hayalini ben seninle gerçekleştirdim. Çünkü benim en büyük hayalim, seni sevmek ve hayatımın geri kalanında da hep senin yanında olabilmekmiş.
                 </p>
                 <h4 style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 1.8rem; color: #6b1d2f; margin: 10px 0; text-align: center;">İYİ Kİ DOĞDUN HAYATIM! ❤️</h4>
-                
                 <div style="background: rgba(212,175,55,0.1); border: 1px dashed #d4af37; padding: 10px; border-radius: 8px; margin-top: 10px; text-align: center;">
                     <p style="font-size: 0.9rem; color: #6b1d2f; font-weight: bold; margin: 0;">✨ BÜYÜK SÜRPRİZ! ✨</p>
                     <p style="font-size: 0.8rem; color: #4a4230; margin: 4px 0 0 0;">Sağ tarafta beliren sihirli butona basarak videona ulaşabilirsin! 👉</p>
@@ -1527,7 +1556,21 @@ Hayatına dokunabildiğim ilk doğum gününü yanında kutlayabildiğim için k
             <span class="flip-hint" style="align-self: flex-start;">← Geri</span>
         </div>
     </div>
+
+    <div class="page-wrapper w7" id="b7">
+        <div class="page-front" style="background: linear-gradient(to right, #e8e4de 0%, #fffdfa 100%); padding: 25px 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; box-sizing: border-box;">
+            <p style="font-size: 0.95rem; color: #4a4230; text-align: center; font-style: italic; line-height: 1.6;">Seni çok seviyoruz... ✨</p>
+            <span class="flip-hint" style="align-self: flex-end; position: absolute; bottom: 20px; right: 20px;">Kapağı Gör →</span>
+        </div>
+        <div class="page-back" style="background: linear-gradient(135deg, #8a1f34 0%, #50121e 100%); border: 3px solid #d4af37; border-right: 12px solid #330a12; color: #d4af37; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; box-sizing: border-box; position: relative;">
+            <div style="font-size: 4rem; text-align: center; filter: drop-shadow(0 0 15px rgba(212,175,55,0.6)); margin-bottom: 20px;">❤️</div>
+            <h2 style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 2.8rem; text-align: center; text-shadow: 2px 2px 6px rgba(0,0,0,0.6); margin: 0 20px;">İyi ki doğdun, Ceyda</h2>
+            <p style="font-size: 1rem; color: #d4af37; margin-top: 15px; text-align: center; opacity: 0.8;">— Sevenlerinden 🤍</p>
+            <span class="flip-hint" style="color: #d4af37; position: absolute; bottom: 20px; left: 20px;">← Geri</span>
+        </div>
+    </div>
                         </div>
+                    </div>
 
                         <div class="video-trigger-sidebar" id="sidebarVideoTrigger">
                             <div class="pulsing-video-btn" onclick="openSurpriseVideo()">🎬</div>
@@ -1538,8 +1581,7 @@ Hayatına dokunabildiğim ilk doğum gününü yanında kutlayabildiğim için k
             </div>
         </div>
 
-        </div>
-        </div>
+    </div>
         <div class="page-timeline">
             <button class="timeline-back-btn" onclick="switchToMain()">← Geri Dön</button>
             
@@ -2056,7 +2098,7 @@ Hayatına dokunabildiğim ilk doğum gününü yanında kutlayabildiğim için k
 
        
        let activePage = 0; 
-        const totalPages = 5; 
+        const totalPages = 7; 
 
         function bookNavigate(direction) {
             const book = document.getElementById('friendshipBook');
@@ -2090,14 +2132,16 @@ Hayatına dokunabildiğim ilk doğum gününü yanında kutlayabildiğim için k
             if (sidebar) sidebar.classList.remove('visible');
             
             // Flüssiges Zurückblättern
-            if (document.getElementById('b5')) document.getElementById('b5').classList.remove('flipped');
-            setTimeout(() => { if (document.getElementById('b4')) document.getElementById('b4').classList.remove('flipped'); }, 80);
-            setTimeout(() => { if (document.getElementById('b3')) document.getElementById('b3').classList.remove('flipped'); }, 160);
-            setTimeout(() => { if (document.getElementById('b2')) document.getElementById('b2').classList.remove('flipped'); }, 240);
+            if (document.getElementById('b7')) document.getElementById('b7').classList.remove('flipped');
+            if (document.getElementById('b6')) document.getElementById('b6').classList.remove('flipped');
+            setTimeout(() => { if (document.getElementById('b5')) document.getElementById('b5').classList.remove('flipped'); }, 80);
+            setTimeout(() => { if (document.getElementById('b4')) document.getElementById('b4').classList.remove('flipped'); }, 160);
+            setTimeout(() => { if (document.getElementById('b3')) document.getElementById('b3').classList.remove('flipped'); }, 240);
+            setTimeout(() => { if (document.getElementById('b2')) document.getElementById('b2').classList.remove('flipped'); }, 320);
             setTimeout(() => { 
                 if (document.getElementById('b1')) document.getElementById('b1').classList.remove('flipped'); 
                 if (book) book.classList.remove('opened');
-            }, 320);
+            }, 400);
             
             activePage = 0;
         }
