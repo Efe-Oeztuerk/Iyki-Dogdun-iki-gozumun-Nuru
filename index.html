@@ -824,7 +824,9 @@
 
         .daisy-center {
             position: absolute;
-            top: 65px; left: 65px;
+            top: 50%; 
+            left: 50%;
+            transform: translate(-50%, -50%); /* Schiebt es perfekt in die mathematische Mitte */
             width: 50px; height: 50px;
             background: radial-gradient(circle, #ffeb3b 0%, #fbc02d 100%);
             border-radius: 50%;
@@ -834,11 +836,13 @@
 
         .daisy-petal {
             position: absolute;
-            top: 0; left: 77px; 
-            width: 26px; height: 75px;
+            top: 0; 
+            left: 77px; /* (180px / 2) - (26px / 2) = 77px -> Perfekte horizontale Mitte */
+            width: 26px; 
+            height: 90px; /* <── ERHÖHT AUF 90px (Exakt die Hälfte der 180px Blume) */
             background: linear-gradient(to bottom, #ffffff 80%, #f5f5f5 100%);
             border-radius: 20px 20px 0 0;
-            transform-origin: bottom center;
+            transform-origin: bottom center; /* Dreht sich nun exakt um die untere Mitte des Blattes */
             cursor: pointer;
             z-index: 5;
             box-shadow: 0 3px 6px rgba(0,0,0,0.15);
@@ -921,7 +925,7 @@
             box-shadow: 0 15px 30px rgba(212,175,55,0.4);
         }
 
-       /* ─── HOCHWERTIGES 3D BUCH DESIGN ─── */
+        /* ─── HOCHWERTIGES 3D BUCH DESIGN ─── */
         .book-section-wrapper {
             width: 100%;
             margin-top: 80px;
@@ -957,7 +961,7 @@
 
         .book.opened { transform: translateX(210px); }
 
-        /* KORREKTUR 1: Auch der .pages Container MUSS den 3D-Raum erhalten */
+                /* KORREKTUR 1: Auch der .pages Container MUSS den 3D-Raum erhalten */
         .book .pages { 
             width: 100%; 
             height: 100%; 
@@ -977,6 +981,20 @@
             /* KORREKTUR 2: Verhindert Flackern in Webkit-Browsern wie Safari/Chrome */
             backface-visibility: hidden; 
         }
+
+/* ─── HIER GENAU EINFÜGEN ─── */
+/* Z-Index Steuerung: Das Cover (w1) liegt ganz oben, danach w2 (Jarai) etc. */
+.book .page-wrapper.w1 { z-index: 5; }
+.book .page-wrapper.w2 { z-index: 4; }
+.book .page-wrapper.w3 { z-index: 3; }
+.book .page-wrapper.w4 { z-index: 2; }
+.book .page-wrapper.w5 { z-index: 1; }
+
+/* Wenn eine Seite umgeblättert (.flipped) wurde, muss sie nach ganz hinten fallen */
+.book .page-wrapper.flipped {
+    z-index: 1 !important;
+}
+/* ────────────────────────── */
 
         .book .page-front, .book .page-back {
             position: absolute;
@@ -1060,15 +1078,19 @@
             font-size: 4.5rem; filter: drop-shadow(0 0 15px rgba(212,175,55,0.6)); margin-top: 20px;
         }
 
-        /* Schichtensteuerung für die geschlossenen/geöffneten Seiten */
-        .page-wrapper.w1 { z-index: 6; }
-        .page-wrapper.w2 { z-index: 5; }
-        .page-wrapper.w3 { z-index: 4; }
+       /* Ersetze die alten w1-w3 Regeln mit diesen 5 Ebenen: */
+.page-wrapper.w1 { z-index: 8; }
+.page-wrapper.w2 { z-index: 7; }
+.page-wrapper.w3 { z-index: 6; }
+.page-wrapper.w4 { z-index: 5; }
+.page-wrapper.w5 { z-index: 4; }
 
-        /* KORREKTUR 4: Erhöhter z-index im geflippten Zustand, damit die linke Buchhälfte sauber oben liegt */
-        .page-wrapper.flipped.w1 { transform: rotateY(-180deg); z-index: 10; }
-        .page-wrapper.flipped.w2 { transform: rotateY(-180deg); z-index: 11; }
-        .page-wrapper.flipped.w3 { transform: rotateY(-180deg); z-index: 12; }
+/* Ersetze auch die .flipped-Regeln direkt darunter: */
+.page-wrapper.flipped.w1 { transform: rotateY(-180deg); z-index: 10; }
+.page-wrapper.flipped.w2 { transform: rotateY(-180deg); z-index: 11; }
+.page-wrapper.flipped.w3 { transform: rotateY(-180deg); z-index: 12; }
+.page-wrapper.flipped.w4 { transform: rotateY(-180deg); z-index: 13; }
+.page-wrapper.flipped.w5 { transform: rotateY(-180deg); z-index: 14; }
 
         /* SÜRPRIZ VIDEO BUTTON */
         .video-trigger-sidebar {
@@ -1269,11 +1291,12 @@
                                 <div class="text-kasten">
                                     <h1>Happy Birthday, iki gözümün nuru ❤️</h1>
                                     <p>
-                                        Hayatına dokunabildiğim og ve ilk doğum gününü yanında kutlayabildiğim için kendimi çok şanslı hissediyorum. 
+Hayatına dokunabildiğim ilk doğum gününü yanında kutlayabildiğim için kendimi çok şanslı hissediyorum. 
                                         Seninle geçen her an benim için tarifsiz derecede özel ve değerli. Gülüşün, sesin, bakışın… 
                                         Hepsi kalbimde ayrı bir yer bıraktı.<br><br>
                                         Bugün sadece senin doğduğun gün değil, aynı zamanda benim hayatımın da güzelleştiği günlerden biri. 
-                                        Bu küçük zaman kapsülü de birlikte yaşadığımız en güzel anıları, hisleri ve sana olan sevgimi içinde saklıyor…
+                                        Bu küçük zaman kapsülünde birlikte yaşadığımız en güzel anıları, hisleri ve sana olan sevgimi içinde saklıyor…
+
                                     </p>
                                     <button class="weiter-btn" onclick="zeigeErinnerungen()">Anıları Gör ✨</button>
                                 </div>
@@ -1293,18 +1316,18 @@
                 <h1 class="birthday-title">Anılarımız</h1>
                 <p class="subtitle">Her anı bir hazine... 🎂✨</p>
 
-                <h2 class="gallery-title">Momente, die ich für immer im Herzen trage 📸</h2>
+                <h2 class="gallery-title">Sonsuza dek Kalbimde...</h2>
                 
                 <div class="gallery-container-flex">
                     <div class="gallery-pinguin-wrapper"><img src="pinguine.png" alt="Süße Pinguine"></div>
                     <div class="grid-gallery">
-                        <div class="polaroid"><img src="foto1.jpg"><div class="caption">Sen & Ben ✨</div></div>
-                        <div class="polaroid"><img src="foto2.jpg"><div class="caption">Aşk mideye gider 🍕❤️</div></div>
+                        <div class="polaroid"><img src="foto1.jpg"><div class="caption">Ilk kez BIZ ✨</div></div>
+                        <div class="polaroid"><img src="foto2.jpg"><div class="caption">Bir kere istirayimmi? 🍕❤️</div></div>
                         <div class="polaroid"><img src="foto3.jpg"><div class="caption">Sadece seninle olan anlar 🌿</div></div>
                         <div class="polaroid"><img src="foto4.jpg"><div class="caption">Kalbimdeki güneş ışığı ☀️</div></div>
                         <div class="polaroid"><img src="foto5.jpg"><div class="caption">Büyülü geceler 🎆</div></div>
                         <div class="polaroid polaroid-focus-left"><img src="foto6.jpg"><div class="caption">Seninle her yolculuk daha güzel 🚌💋</div></div>
-                    </div>
+
                 </div>
 
                 <h2 class="gallery-title" style="margin-top: 100px;">Seni Sevmemin Küçük Birkaç Nedeni... 📦❤️</h2>
@@ -1395,44 +1418,115 @@
                             <div class="page-click-zone-right" onclick="bookNavigate('right')"></div>
 
                             <div class="pages">
-                                <div class="page-wrapper w1" id="b1">
-                                    <div class="page-front">
-                                        <h2>Bizim Kitabımız</h2>
-                                        <div class="cover-heart">❤️</div>
-                                        <span class="flip-hint">Açmak için tıkla →</span>
-                                    </div>
-                                    <div class="page-back">
-                                        <h3>Aile 🤍</h3>
-                                        <p>"Canım kızımız, yeni yaşın sana sağlık und mutluluk getirsin. Seninle her zaman gurur duyuyoruz. İyi ki doğdun, iyi ki varsın!"</p>
-                                        <span class="flip-hint">Sonraki Sayfa →</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="page-wrapper w2" id="b2">
-                                    <div class="page-front">
-                                        <h3>Arkadaşlar 👭</h3>
-                                        <p>"Doğum günün kutlu olsun canımız! Seninle güldüğümüz, eğlendiğimiz her an çok özel. Yeni yaşında tüm dileklerin gerçek olsun, seni çok seviyoruz!"</p>
-                                        <span class="flip-hint">Çevir →</span>
-                                    </div>
-                                    <div class="page-back">
-                                        <h3>Ortak Hatıralar 🌟</h3>
-                                        <p>"Geçmişten bugüne biriktirdiğimiz tüm güzel anlar, gelecekteki kahkahalarımızın temeli olsun. İyi ki hayatımızdasın!"</p>
-                                        <span class="flip-hint">Sonraki Sayfa →</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="page-wrapper w3" id="b3">
-                                    <div class="page-front">
-                                        <h3>Küçük Bir Not 📝</h3>
-                                        <p>"Sen her şeyin en güzelini hak ediyorsun. Şimdi son bir kez daha çevir..."</p>
-                                        <span class="flip-hint">Son kez çevir →</span>
-                                    </div>
-                                    <div class="page-back">
-                                        <h3>Son Sayfa ✨</h3>
-                                        <p>"Sevginin etrafını sardığı, asla yalnız kalmayacağın bir ömre... <br><br>Büyük sürprizi sağ taraftaki butona basarak görebilirsin! 👉"</p>
-                                    </div>
-                                </div>
-                            </div>
+    
+    <div class="page-wrapper w1" id="b1">
+        <div class="page-front" style="background: linear-gradient(135deg, #8a1f34 0%, #50121e 100%); border: 3px solid #d4af37; border-left: 12px solid #330a12; color: #d4af37; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; box-sizing: border-box;">
+            <h2 style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 3.5rem; text-align: center; margin-bottom: 15px; text-shadow: 2px 2px 6px rgba(0,0,0,0.6);">Bizim Kitabımız</h2>
+            <div class="cover-heart" style="font-size: 4.5rem; text-align: center; filter: drop-shadow(0 0 15px rgba(212,175,55,0.6)); margin-top: 20px;">❤️</div>
+            <span class="flip-hint" style="color: #d4af37; position: absolute; bottom: 20px;">Açmak için tıkla →</span>
+        </div>
+        <div class="page-back" style="background: linear-gradient(to left, #e8e4de 0%, #fffdfa 100%); padding: 30px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
+            <div>
+                <h3 style="font-size: 2rem; color: #6b1d2f; margin-top: 10px;">Sevdiklerinden...</h3>
+                <p style="font-size: 1.1rem; color: #4a4230; text-align: center; margin-top: 40px; line-height: 1.5;">Senin için bırakılan özel mesajları görmek için sayfaları çevirmeye devam et... ✨</p>
+            </div>
+            <span class="flip-hint" style="align-self: flex-start;">← Geri</span>
+        </div>
+    </div>
+
+    <div class="page-wrapper w2" id="b2">
+        <div class="page-front" style="background: linear-gradient(to right, #e8e4de 0%, #fffdfa 100%); padding: 25px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
+            <div>
+                <h3 style="color: #6b1d2f; font-size: 2.2rem; margin-bottom: 10px;">Von Jarai...</h3>
+                <p style="font-size: 1rem; line-height: 1.4; color: #4a4230; text-align: left;">
+                    Ich wünsche dir alles Liebe zum Geburtstag, Ceyda! Wenn ich zurückdenke, wie wir uns damals kennengelernt haben... Dieser Moment am S-Bahnhof, als du mich angesprochen hast, hat unser beider Leben grundlegend verändert. Von diesem Zeitpunkt an gingen wir den Weg des Lebens gemeinsam. Du bist eine Person, die durch ihre ganz eigene Art und Weise so besonders ist. Mit dir wird selbst ein ganz normaler Tag zu einer goldenen Erinnerung.
+                </p>
+            </div>
+            <span class="flip-hint" style="align-self: flex-end;">Blättern →</span>
+        </div>
+        <div class="page-back" style="background: linear-gradient(to left, #e8e4de 0%, #fffdfa 100%); padding: 25px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box; align-items: center;">
+            <div style="width: 100%;">
+                <h3 style="color: #6b1d2f; font-size: 2.2rem; margin-bottom: 10px; text-align: left;">Sonsuz Sevgiyle</h3>
+                <p style="font-size: 0.95rem; line-height: 1.4; color: #4a4230; margin-bottom: 8px; text-align: left;">
+                    Du hast diese seltene Gabe, Menschen zum Lachen zu bringen, wenn sie es am meisten brauchen. Wenn es jemanden gibt, der alles für andere gibt, dann bist du das. Ich bin unendlich dankbar, dich in meinem Leben zu haben. Möge Allah dir immer das Beste auf deinen Weg legen, dein Herz beschützen und dein Leben mit Segen erfüllen. Bleib genau so, wie du bist!
+                </p>
+                <p style="font-size: 1rem; color: #6b1d2f; margin: 0 0 5px 0; text-align: left;"><strong>In voller Liebe, deine Jarai ❤️</strong></p>
+            </div>
+            <img src="jarai.jpg" alt="Jarai und Ceyda" style="width: 55%; height: auto; max-height: 110px; object-fit: cover; object-position: top; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.15); margin-bottom: 10px;">
+            <span class="flip-hint" style="align-self: flex-start; position: absolute; bottom: 20px; left: 20px;">← Zurück</span>
+        </div>
+    </div>
+
+    <div class="page-wrapper w3" id="b3">
+        <div class="page-front" style="background: linear-gradient(to right, #e8e4de 0%, #fffdfa 100%); padding: 30px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
+            <div>
+                <h3 style="font-size: 2rem; color: #6b1d2f; margin-top: 10px;">Noara'dan...</h3>
+                <p style="font-size: 1.1rem; line-height: 1.5; color: #4a4230; text-align: left; margin-top: 20px;">
+                    "Doğum günün kutlu olsun canım! Seninle güldüğümüz, eğlendiğimiz her an çok özel. Yeni yaşında tüm dileklerin gerçek olsun, seni çok seviyoruz!"
+                </p>
+            </div>
+            <span class="flip-hint" style="align-self: flex-end;">Çevir →</span>
+        </div>
+        <div class="page-back" style="background: linear-gradient(to left, #e8e4de 0%, #fffdfa 100%); padding: 30px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
+            <div>
+                <h3 style="color: #6b1d2f; font-size: 2.2rem; margin-bottom: 15px;">Nima'dan...</h3>
+                <p style="font-size: 1.1rem; line-height: 1.5; color: #4a4230; text-align: left;">
+                    "Geçmişten bugüne biriktirdiğimiz tüm güzel anlar, gelecekteki kahkahalarımızın temeli olsun. İyi ki hayatımızdasın!"
+                </p>
+            </div>
+            <span class="flip-hint" style="align-self: flex-start;">← Geri</span>
+        </div>
+    </div>
+
+    <div class="page-wrapper w4" id="b4">
+        <div class="page-front" style="background: linear-gradient(to right, #e8e4de 0%, #fffdfa 100%); padding: 30px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
+            <div>
+                <h3 style="color: #6b1d2f; font-size: 2.2rem; margin-bottom: 15px;">Laura'dan...</h3>
+                <p style="font-size: 1.1rem; line-height: 1.5; color: #4a4230; text-align: left;">
+                    "Sen her şeyin en güzelini hak ediyorsun. Yeni yaşın sana neşe ve huzur getirsin. Şimdi son bir kez daha çevir..."
+                </p>
+            </div>
+            <span class="flip-hint" style="align-self: flex-end;">Sonraki Sayfa →</span>
+        </div>
+        <div class="page-back" style="background: linear-gradient(to left, #e8e4de 0%, #fffdfa 100%); padding: 25px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
+            <div>
+                <h3 style="color: #6b1d2f; font-size: 2rem; margin-bottom: 8px;">Efe'den... ❤️</h3>
+                <p style="font-size: 0.82rem; line-height: 1.35; color: #4a4230; text-align: left;">
+                    Güzelim, birtanem, dünya güzeli sevgilim, Nasıl başlasam hiç bilmiyorum... Ben kendimi bildim bileli öyle çok büyük hayallerim, ulaşılmaz hedeflerim olmadı. Tek istediğim iyi bir insan olmak ve sevdiklerimi gururlandırmaktı. Belki de sırf bu yüzden üniversiteye gidiyorum sanıyordum.<br><br>
+                    Ama uzun zaman sonra şunu fark ettim... Belki de benim okuma sebebim çok daha farklıydı. Belki de kader beni sadece seni tanıyabilmem için bu yola çıkardı. İyi ki okumaya başlamışım... İyi ki seni tanımışım.<br><br>
+                    Çünkü bu 21 yıllık hayatımda başıma gelen en güzel şey sensin. Hayatımdaki o eksik parçayı sen tamamladın. Seni severken hissettiklerimi tarif etmek gerçekten çok zor. Sanki yıllarca emek verdiğin bir hayaline sonunda kavuşmuşsun gibi... Ya da uzun zamandır karanlıkta yürürken bir anda güneşi görmüşsün gibi...
+                </p>
+            </div>
+            <span class="flip-hint" style="align-self: flex-end;">Devamını Oku →</span>
+        </div>
+    </div>
+
+    <div class="page-wrapper w5" id="b5">
+        <div class="page-front" style="background: linear-gradient(to right, #e8e4de 0%, #fffdfa 100%); padding: 25px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
+            <div>
+                <p style="font-size: 0.82rem; line-height: 1.35; color: #4a4230; text-align: left; margin-top: 15px;">
+                    Nefes almak bile daha güzel geliyor. Kalbim her seni düşündüğünde yeniden atmaya başlıyor. Ama biliyor musun? Bunların hepsini toplasan bile seni sevmenin verdiği mutluluğun yanında hiçbir şey kalıyor. Sen, en kötü günümde bile yüzümü güldüren insansın. Ne yaşarsam yaşayayım, bana huzur veren, beni kendime getiren, içimi sıcacık yapan hep sensin.<br><br>
+                    Şu an burada oturup seni neden sevdiğimi anlatacak binlerce şey yazabilirim. Ama ben bunları sadece söylemek istemiyorum... Sana ömrüm boyunca hissettirmek istiyorum. Hani en başta demiştim ya, büyük hayallerim yoktu diye... Belki hâlâ öyle çok büyük hayallerim yok. Ama şunu fark ettim ki, dünyanın en büyük hayalini ben seninle gerçekleştirdim. Çünkü benim en büyük hayalim, seni sevmek ve hayatımın geri kalanında da hep senin yanında olabilmekmiş.
+                </p>
+            </div>
+            <span class="flip-hint" style="align-self: flex-end;">Son Sayfa →</span>
+        </div>
+        <!-- FEHLER BEHOBEN: Hier wurde "page-front" zu "page-back" geändert und die Gradient-Richtung umgedreht -->
+        <div class="page-back" style="background: linear-gradient(to left, #e8e4de 0%, #fffdfa 100%); padding: 25px 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
+            <div style="display: flex; flex-direction: column; justify-content: center; height: 100%;">
+                <p style="font-size: 0.82rem; line-height: 1.35; color: #4a4230; text-align: left; margin-bottom: 5px;">
+                    Bu dünyada seni benden daha çok sevebilecek birinin olduğuna inanmıyorum. Seni her geçen gün ilk günkü gibi değil, her geçen gün daha da fazla seviyorum. İyi ki varsın, güzelim... İyi ki seni sevmişim. İyi ki hayatıma girmişsin. Ve bugün...
+                </p>
+                <h4 style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 1.8rem; color: #6b1d2f; margin: 10px 0; text-align: center;">İYİ Kİ DOĞDUN HAYATIM! ❤️</h4>
+                
+                <div style="background: rgba(212,175,55,0.1); border: 1px dashed #d4af37; padding: 10px; border-radius: 8px; margin-top: 10px; text-align: center;">
+                    <p style="font-size: 0.9rem; color: #6b1d2f; font-weight: bold; margin: 0;">✨ BÜYÜK SÜRPRİZ! ✨</p>
+                    <p style="font-size: 0.8rem; color: #4a4230; margin: 4px 0 0 0;">Sağ tarafta beliren sihirli butona basarak videona ulaşabilirsin! 👉</p>
+                </div>
+            </div>
+            <span class="flip-hint" style="align-self: flex-start;">← Geri</span>
+        </div>
+    </div>
                         </div>
 
                         <div class="video-trigger-sidebar" id="sidebarVideoTrigger">
@@ -1444,6 +1538,8 @@
             </div>
         </div>
 
+        </div>
+        </div>
         <div class="page-timeline">
             <button class="timeline-back-btn" onclick="switchToMain()">← Geri Dön</button>
             
@@ -1457,7 +1553,7 @@
                     <div class="timeline-card">
                         <h2>İlk Görüş 👀</h2>
                         <span class="date">02.10.2024</span>
-                        <p>Sana çaktırmadan, gizlice o yakandaki isimliğe bakmıştım... İçimden senin Türk olduğunu gördüğümde nasıl sevindiğimi bir bilsen!</p>
+                        <p>Sana çaktırmadan, gizlice o önündeki isimliğe bakmıştım... İçimden senin Türk olduğunu gördüğümde nasıl sevindiğimi bir bilsen!</p>
                     </div>
                 </div>
 
@@ -1465,7 +1561,7 @@
                     <div class="timeline-card">
                         <h2>Cousinen-Check 📱</h2>
                         <span class="date">21.10.2024</span>
-                        <p>Artık aramızdaki o güzel bağ iyice kendini belli ediyordu. Hatta o gün kuzenime senden bir video atmak zorunda kalmıştım, çünkü o bile çoktan senin adını ezberlemişti!</p>
+                        <p>Senden gerçekdende etkilenmişdim. Hatta o gün kuzenime senden bir video atmak zorunda kalmıştım, çünkü o bile çoktan senin adını ezberlemişti!</p>
                         <video src="timeline_video.mp4" class="timeline-video-file" controls></video>
                     </div>
                 </div>
@@ -1474,15 +1570,15 @@
                     <div class="timeline-card">
                         <h2>İlk Dedikodu Seansı 🤫</h2>
                         <span class="date">01.04.2025</span>
-                        <p>Başkaları hakkında yaptığımız o ilk derin "dedikodu" (dedikodus)... Her saniyede seninle ne kadar mükemmel anlaştığımızı und kafamdaki o ideal insana nasıl da birebir uyduğunu daha net görüyordum.</p>
+                        <p>Başkaları hakkında yaptığımız o ilk derin "dedikodu"... Her saniyede seninle ne kadar mükemmel anlaştığımızı und kafamdaki o ideal insana nasıl da birebir uyduğunu daha net görüyordum.</p>
                     </div>
                 </div>
 
                 <div class="timeline-item right">
                     <div class="timeline-card">
-                        <h2>Netleşen Duygular & Melih 👀💥</h2>
+                        <h2>Netleşen Duygular 👀💥</h2>
                         <span class="date">31.07.2025</span>
-                        <p>Şu noteneinsichten (not incelemeleri) dönemindeki upuzun sohbetlerimizden sonra içimde bir şeyler tamamen koptu: Ben seni gerçekten, tamamen istiyorum! (Bu arada o sıra Melih'e de acayip kuruluyordum, ne o öyle samimi samimi yakınlaşmalar falan...)</p>
+                        <p>Şu noteneinsichten varya. Upuzun sohbetlerimizden sonra içimde bir şeyler tamamen koptu: Ben seni gerçekten, tamamen istiyorum! (Bu arada o sıra Melih'e de acayip kuruluyordum, ne o öyle samimi samimi yakınlaşmalar falan...)</p>
                     </div>
                 </div>
 
@@ -1506,15 +1602,15 @@
                     <div class="timeline-card">
                         <h2>Fırtınadan Sonraki Ders ⛈️✨</h2>
                         <span class="date">29.12.2025</span>
-                        <p>Ailevi meseleler yüzünden bir türlü zaman bulamadığım, aramızın açıldığı und daha tam başlayamadan neredeyse bitme noktasına geldiğimiz o zor anlar... Kötü olan her şeyi arkamızda bıraktık ama bu olay bana dev bir ders verdi: Ne olursa olsun, senin için her zaman vakit vardır. Seni kaybetme korkusu düşüncesi bile beni delirtmeye yetti.</p>
+                        <p>Ailevi meseleler yüzünden bir türlü zaman bulamadığım, aramızın açıldığı ve daha tam başlayamadan neredeyse bitme noktasına geldiğimiz o zor anlar... Kötü olan her şeyi arkamızda bıraktık ama bu olay bana dev bir ders verdi: Ne olursa olsun, senin için her zaman vakit vardır. Seni kaybetme korkusu düşüncesi bile beni delirtmeye yetti.</p>
                     </div>
                 </div>
 
                 <div class="timeline-item right">
                     <div class="timeline-card">
-                        <h2>O Büyük Gün: Sevgililik Teklifi 🌹💍</h2>
+                        <h2>O Büyük Gün: Sevgililik Teklifi 🌹</h2>
                         <span class="special-date">14.02.2026 (Sevgililer Günü) <span class="beating-heart">❤️</span></span>
-                        <p>Bütün o ağır sınav streslerini, vizeleri geride bıraktıktan sonra Sevgililer Günü'nde ilk kez baş başa çıktık. Ve o gün bana "Benimle olur musun?" diye sordum. Kabul ediyorum, birazcık heyecanlanmış olabilirim... Ve evet, yalan yok; bana her sarıldığında kalbim hala tam olarak o günkü gibi deli gibi çarpıyor.</p>
+                        <p>Bütün o ağır sınav streslerini, geride bıraktıktan sonra Sevgililer Günü'nde baş başa çıktık. Ve o gün bana "Benimle olur musun?" diye sordum. Kabul ediyorum, birazcık heyecanlanmış olabilirim... Ve evet, yalan yok; bana her sarıldığında kalbim hala tam olarak o günkü gibi deli gibi çarpıyor.</p>
                     </div>
                 </div>
 
@@ -1529,7 +1625,7 @@
                 <div class="timeline-item right">
                     <div class="timeline-card">
                         <h2>Bizim Dünyamız ✨</h2>
-                        <p>Zamanın und tarihlerin önemsiz kaldığı, sadece seninle benim olduğum o harika anlardan biri...</p>
+                        <p>Zamanın ve tarihlerin önemsiz kaldığı, sadece seninle benim olduğum o harika anlardan biri...</p>
                         <img src="timeline_bild1.jpg" class="timeline-img" alt="Anı">
                     </div>
                 </div>
@@ -1849,6 +1945,37 @@
         const turntable = document.getElementById('turntable');
         const pageContainer = document.getElementById('pageContainer');
 
+    // 2. Funktion zum Einblenden der Timeline-Elemente
+    const timelineItems = document.querySelectorAll('.timeline-item');
+
+    function showAllTimelineItems() {
+        timelineItems.forEach((item, index) => {
+            setTimeout(() => {
+                item.classList.add('show');
+            }, index * 150);
+        });
+    }
+
+    // 3. Funktion zum Umschalten zur Timeline
+    function switchToTimeline() {
+        if (pageContainer) {
+            pageContainer.style.transform = 'translateX(-100vw)';
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            setTimeout(showAllTimelineItems, 500);
+        }
+    }
+
+    // 4. Funktion zum Zurückschalten
+    function switchToMain() {
+        if (pageContainer) {
+            pageContainer.style.transform = 'translateX(0)';
+            setTimeout(() => {
+                const portal = document.querySelector('.portal-section');
+                if (portal) portal.scrollIntoView({ behavior: 'smooth' });
+            }, 850);
+        }
+    }
+
         function playMusic() {
             music.play().then(() => {
                 widget.classList.add('music-playing');
@@ -1927,56 +2054,52 @@
             letter.classList.add('fly-up-contrast');
         }
 
-        function switchToTimeline() {
-            pageContainer.style.transform = 'translateX(-100vw)';
-            window.scrollTo({ top: 0, behavior: 'instant' });
-            setTimeout(checkTimelineScroll, 300);
-        }
-
-        function switchToMain() {
-            pageContainer.style.transform = 'translateX(0)';
-            setTimeout(() => {
-                const portal = document.querySelector('.portal-section');
-                portal.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-        }
-
-        let activePage = 0; 
+       
+       let activePage = 0; 
+        const totalPages = 5; 
 
         function bookNavigate(direction) {
             const book = document.getElementById('friendshipBook');
-            const b1 = document.getElementById('b1');
-            const b2 = document.getElementById('b2');
-            const b3 = document.getElementById('b3');
             const sidebar = document.getElementById('sidebarVideoTrigger');
 
             if (direction === 'right') {
-                if (activePage === 0) {
-                    book.classList.add('opened'); 
-                    b1.classList.add('flipped');  
-                    activePage = 1;
-                } else if (activePage === 1) {
-                    b2.classList.add('flipped');  
-                    activePage = 2;
-                } else if (activePage === 2) {
-                    b3.classList.add('flipped');  
-                    activePage = 3;
-                    sidebar.classList.add('visible');
+                if (activePage < totalPages) {
+                    activePage++;
+                    const page = document.getElementById(`b${activePage}`);
+                    if (page) page.classList.add('flipped');
+                    
+                    if (activePage === 1 && book) book.classList.add('opened');
+                    if (activePage === totalPages && sidebar) sidebar.classList.add('visible');
                 }
             } else if (direction === 'left') {
-                if (activePage === 1) {
-                    b1.classList.remove('flipped');
-                    book.classList.remove('opened'); 
-                    activePage = 0;
-                } else if (activePage === 2) {
-                    b2.classList.remove('flipped');
-                    activePage = 1;
-                } else if (activePage === 3) {
-                    b3.classList.remove('flipped');
-                    sidebar.classList.remove('visible'); 
-                    activePage = 2;
+                if (activePage > 0) {
+                    const page = document.getElementById(`b${activePage}`);
+                    if (page) page.classList.remove('flipped');
+                    activePage--;
+                    
+                    if (activePage === 0 && book) book.classList.remove('opened');
+                    if (activePage < totalPages && sidebar) sidebar.classList.remove('visible');
                 }
             }
+        }
+
+        function resetBook() {
+            const book = document.getElementById('friendshipBook');
+            const sidebar = document.getElementById('sidebarVideoTrigger');
+            
+            if (sidebar) sidebar.classList.remove('visible');
+            
+            // Flüssiges Zurückblättern
+            if (document.getElementById('b5')) document.getElementById('b5').classList.remove('flipped');
+            setTimeout(() => { if (document.getElementById('b4')) document.getElementById('b4').classList.remove('flipped'); }, 80);
+            setTimeout(() => { if (document.getElementById('b3')) document.getElementById('b3').classList.remove('flipped'); }, 160);
+            setTimeout(() => { if (document.getElementById('b2')) document.getElementById('b2').classList.remove('flipped'); }, 240);
+            setTimeout(() => { 
+                if (document.getElementById('b1')) document.getElementById('b1').classList.remove('flipped'); 
+                if (book) book.classList.remove('opened');
+            }, 320);
+            
+            activePage = 0;
         }
 
         function openSurpriseVideo() {
@@ -1985,59 +2108,32 @@
             
             if (music && !music.paused) {
                 music.pause();
-                widgetText.innerText = "Musik pausiert";
-                widget.classList.remove('music-playing');
-                turntable.classList.remove('music-playing');
+                if (widgetText) widgetText.innerText = "Musik pausiert";
+                if (widget) widget.classList.remove('music-playing');
+                if (turntable) turntable.classList.remove('music-playing');
             }
             
             try {
                 confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
             } catch(e) {}
 
-            modal.classList.add('open');
-            video.play();
+            if (modal) modal.classList.add('open');
+            if (video) video.play();
         }
 
         function closeSurpriseVideo() {
             const modal = document.getElementById('surpriseVideoModal');
             const video = document.getElementById('surpriseVideo');
-            video.pause();
-            modal.classList.remove('remove');
-            modal.classList.remove('open');
+            if (video) video.pause();
+            if (modal) {
+                modal.classList.remove('remove');
+                modal.classList.remove('open');
+            }
             resetBook();
         }
 
-        function resetBook() {
-            const book = document.getElementById('friendshipBook');
-            const sidebar = document.getElementById('sidebarVideoTrigger');
-            
-            sidebar.classList.remove('visible');
-            
-            document.getElementById('b3').classList.remove('flipped');
-            setTimeout(() => {
-                document.getElementById('b2').classList.remove('flipped');
-            }, 150);
-            setTimeout(() => {
-                document.getElementById('b1').classList.remove('flipped');
-                book.classList.remove('opened');
-            }, 300);
-            
-            activePage = 0;
-        }
-
-        const timelineItems = document.querySelectorAll('.timeline-item');
-
-        function checkTimelineScroll() {
-            if (pageContainer.style.transform === 'translateX(-100vw)') {
-                const triggerBottom = window.innerHeight * 0.85;
-                timelineItems.forEach(item => {
-                    const itemTop = item.getBoundingClientRect().top;
-                    if (itemTop < triggerBottom) { item.classList.add('show'); }
-                });
-            }
-        }
-
-        window.addEventListener('scroll', checkTimelineScroll);
+        // KORREKTUR: Die alte Scroll-Logik, die das Rendern blockiert hat, wurde entfernt.
+        // Das automatische Einblenden wird jetzt fehlerfrei über die switchToTimeline-Funktion gesteuert.
 
         // PAPATYA LOGIK (GÄNSEBLÜMCHEN)
         let pluckedCount = 0;
@@ -2054,26 +2150,30 @@
 
             const statusText = document.getElementById('daisyStatus');
 
-            if (pluckedCount % 2 !== 0) {
-                statusText.innerText = "Seviyor... ❤️";
-                statusText.style.color = "#fecfef";
-            } else {
-                statusText.innerText = "Sevmiyor... 💔";
-                statusText.style.color = "#ffffff";
+            if (statusText) {
+                if (pluckedCount % 2 !== 0) {
+                    statusText.innerText = "Seviyor... ❤️";
+                    statusText.style.color = "#fecfef";
+                } else {
+                    statusText.innerText = "Sevmiyor... 💔";
+                    statusText.style.color = "#ffffff";
+                }
             }
 
             if (pluckedCount === totalPetals) {
-                statusText.innerText = "Şüphen mi vardı? 😜";
-                statusText.style.color = "#ffeb3b";
+                if (statusText) {
+                    statusText.innerText = "Şüphen mi vardı? 😜";
+                    statusText.style.color = "#ffeb3b";
+                }
                 
                 try {
                     confetti({ particleCount: 80, spread: 60, origin: { y: 0.75 } });
                 } catch(e) {}
 
                 const finalMsg = document.getElementById('daisyFinal');
-                finalMsg.classList.add('visible');
+                if (finalMsg) finalMsg.classList.add('visible');
             }
         }
-    </script>
+</script>
 </body>
 </html>
